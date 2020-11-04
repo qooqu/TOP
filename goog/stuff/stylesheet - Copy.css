@@ -1,0 +1,142 @@
+container {
+    height: 100%;
+}
+
+nav {
+    height: 48px;
+    padding: 6px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+nav>a {
+    margin-left: 15px;
+    color: rgba(0, 0, 0, 0.87);
+    font: 13px/27px Roboto, RobotoDraft, Arial, sans-serif;
+    text-decoration: none;
+}
+
+nav>a:hover {
+    text-decoration: underline;
+}
+
+#nav-a-svg {
+    width: 24px;
+    height: 24px;
+    padding: 8px;
+    border-radius: 50%;
+    fill: #5f6368;
+}
+
+#nav-a-svg:hover {
+    background-color: rgba(60, 64, 67, 0.08);
+}
+
+#nav-a-svg>svg {
+    width: 24px;
+    height: 24px;
+}
+
+#nav-a-img {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+#nav-a-img:hover {
+    background-color: rgba(60, 64, 67, 0.08);
+}
+
+nav>a>img {
+    height: 32px;
+    border-radius: 50%;
+}
+
+#banner {
+    height: 171.2px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+#banner>img {
+    width: 272px;
+    height: 92px;
+}
+
+#search-container {
+    height: 120px;
+    padding: 26px;
+}
+
+#search-text-container {
+    width: 582.4px;
+    height: 44px;
+    border: 1px solid #dfe1e5;
+    border-radius: 22px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#search-text-container:hover {
+    box-shadow: 0 1px 6px rgba(32, 33, 36, .28);
+}
+
+.addShadowWithJS {
+    box-shadow: 0 1px 6px rgba(32, 33, 36, .28);
+}
+
+#search-text-svg {
+    width: 20px;
+    height: 20px;
+    padding-left: 14px;
+    padding-right: 13px;
+    fill: #9aa0a6;
+}
+
+#search-text-box {
+    width: 85%;
+    border: none;
+}
+
+#search-text-box:focus {
+    outline: none;
+}
+
+#search-buttons-container {
+    height: 70px;
+    padding-top: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type="submit"] {
+    background-image: linear-gradient(top, #f8f9fa, #f8f9fa);
+    background-color: #f8f9fa;
+    border: 1px solid #f8f9fa;
+    border-radius: 4px;
+    color: #3c4043;
+    font-family: arial, sans-serif;
+    font-size: 14px;
+    margin: 11px 4px;
+    padding: 0 16px;
+    line-height: 27px;
+    height: 36px;
+    min-width: 54px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+input[type="submit"]:hover {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    background-image: linear-gradient(top, #f8f9fa, #f8f9fa);
+    background-color: #f8f9fa;
+    border: 1px solid #dadce0;
+    color: #202124;
+}
