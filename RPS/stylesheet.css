@@ -1,0 +1,15 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#btnDiv {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-disabled {
+    pointer-events: none;
+    color: grey;
+}

@@ -1,66 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<script>
-    function computerChoose() {
-        let num = Math.floor(Math.random() * 3);
-        switch (num) {
-            case 0:
-                return 'rock';
-            case 1:
-                return 'paper';
-            case 2:
-                return 'scissors';
-                break;
-        }
-    }
-
-    function findWinner(playerChoice, computerChoice) {
-        if (playerChoice == computerChoice) {
-            return 'draw';
-        }
-        if (
-            playerChoice == 'rock' && computerChoice == 'scissors' ||
-            playerChoice == 'paper' && computerChoice == 'rock' ||
-            playerChoice == 'scissors' && computerChoice == 'paper'
-        ) {
-            return 'player';
-        }
-        return 'computer';
-    }
-
-    function oneRound() {
-        let playerChoice = prompt('What\'ll it be?').toLowerCase();
-        let computerChoice = computerChoose();
-        return findWinner(playerChoice, computerChoice);
-    }
-
-    function game() {
-        let playerWins = 0;
-        let computerWins = 0;
-        while ( Math.max(playerWins, computerWins) <= 2 ) {
-            let winner = oneRound();
-            switch (winner) {
-                case 'draw':
-                    console.log(`Push. Player: ${playerWins}. Computer: ${computerWins}.`);
-                    break;
-                case 'player':
-                    playerWins++;
-                    console.log(`Nice one. Player: ${playerWins}. Computer: ${computerWins}.`);
-                    break;
-                case 'computer':
-                    computerWins++;
-                    console.log(`Ah bad luck. Player: ${playerWins}. Computer: ${computerWins}.`);
-            }
-        }
-        if (playerWins > computerWins) {
-            console.log(`You win!`);
-        } else {
-            console.log(`Computer wins :(`);
-        }
-    }
-</script>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
 </head>
+
 <body>
+    <div id="container">
+        <h1>ro-sham-bo</h1>
+        <h3>best of 5</h3>
+        <button id="btnStart">New Game</button>
+        <div id="btnDiv">
+            <button id="btnRock" class="btn-disabled">Rock</button>
+            <button id="btnPaper" class="btn-disabled">Paper</button>
+            <button id="btnScissors" class="btn-disabled">Scissors</button>
+        </div>
+        <div id="gameStatusDiv"></div>
+    </div>
+    <script src="script.js"></script>
 </body>
-</html> 
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+    function computerChoose() {
+        let num = Math.floor(Math.random() * 3);
+        switch (num) {
+            case 0:
+                return 'rock';
+            case 1:
+                return 'paper';
+            case 2:
+                return 'scissors';
+                break;
+        }
+    }
+
+    function findWinner(playerChoice, computerChoice) {
+        if (playerChoice == computerChoice) {
+            return 'draw';
+        }
+        if (
+            playerChoice == 'rock' && computerChoice == 'scissors' ||
+            playerChoice == 'paper' && computerChoice == 'rock' ||
+            playerChoice == 'scissors' && computerChoice == 'paper'
+        ) {
+            return 'player';
+        }
+        return 'computer';
+    }
+
+    function oneRound() {
+        let playerChoice = prompt('What\'ll it be?').toLowerCase();
+        let computerChoice = computerChoose();
+        return findWinner(playerChoice, computerChoice);
+    }
+
+    function game() {
+        let playerWins = 0;
+        let computerWins = 0;
+        while ( Math.max(playerWins, computerWins) <= 2 ) {
+            let winner = oneRound();
+            switch (winner) {
+                case 'draw':
+                    console.log(`Push. Player: ${playerWins}. Computer: ${computerWins}.`);
+                    break;
+                case 'player':
+                    playerWins++;
+                    console.log(`Nice one. Player: ${playerWins}. Computer: ${computerWins}.`);
+                    break;
+                case 'computer':
+                    computerWins++;
+                    console.log(`Ah bad luck. Player: ${playerWins}. Computer: ${computerWins}.`);
+            }
+        }
+        if (playerWins > computerWins) {
+            console.log(`You win!`);
+        } else {
+            console.log(`Computer wins :(`);
+        }
+    }
+</script>
+</head>
+<body>
+</body>
+</html> 
