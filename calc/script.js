@@ -12,13 +12,13 @@ display.style.padding = '0 20px 0 20px';
 display.style.fontFamily = 'Montserrat';
 divCalc.appendChild(display);
 
-let buttonArray = [7, 8, 9, '+', 4, 5, 6, '-', 1, 2, 3, '*', 'C', 0, '.', '/', '=', '+/-'];
+let buttonArray = [7, 8, 9, '+', 4, 5, 6, '-', 1, 2, 3, '*', '+/-', 0, '.', '/', '=', 'C'];
 buttonArray.forEach(ele => {
     let btn = document.createElement('button');
     btn.id = ele;
     btn.style.width = '100%';
     btn.style.height = '100%';
-    btn.style.background = 'lightblue';
+    btn.style.background = ele == 'C' ? 'orange' : ['+', '-', '*', '/', '='].indexOf(ele) == -1 ? 'lightblue' : 'lightgreen';
     btn.style.display = 'flex';
     btn.style.justifyContent = 'center';
     btn.style.alignItems = 'center';
@@ -31,6 +31,8 @@ buttonArray.forEach(ele => {
 display.style.gridColumn = '1 / span 4';
 document.getElementById('=').style.gridColumn = '1 / span 3';
 
+display.textContent = 0;
+
 // functionality
 
 // keep track of
@@ -41,7 +43,7 @@ let prevOper = null;
 // was the previous click on a number or an operator
 let prevClick = null;
 
-// checks if any of {number, ., +/-} or an operator was clicked 
+// send any of {number, ., +/-} to numClick, otherwise call operClick
 function handleClick(e) {
     let clicked = e.target.id;
     let parsed = parseInt(clicked);
@@ -54,11 +56,15 @@ function handleClick(e) {
     }
 }
 
-// TODO the sequence '=, +/-' is broken. maybe make +/- it's own secondary function
 // clicking numbers only effects the display
 function numberClick(num) {
-    if (prevClick == 'oper') {
+    if (prevClick == 'oper' || display.textContent == '0') {
         display.textContent = '';
+    }
+    // if prevOper was '=', the user is starting a new calc
+    if (prevOper == '=') {
+        stored = null;
+        prevOper = null;
     }
     prevClick = 'num';
     if (num == '+/-') {
@@ -72,12 +78,13 @@ function numberClick(num) {
         display.textContent = arr.join('');
     } else if (num == '.' && display.textContent == '') {
         display.textContent += '0.';
+    } else if (num == '.' && display.textContent.indexOf('.') != -1) {
+        return;
     } else {
         display.textContent += num;
     }
 }
 
-// TODO what if they click an oper while curr is null? ... i guess handleClick / parse will send a 0?
 function operClick(oper, curr) {
     if (oper == 'C') {
         stored = null;
@@ -106,7 +113,7 @@ function operClick(oper, curr) {
             }
             prevOper = oper;
         }
-        stored = Math.round(stored * 100) / 100;
+        // stored = Math.round(stored * 100) / 100;
     }
-    display.textContent = stored;
+    display.textContent = stored || '0'; // if stored is null, fall back to 0
 }
