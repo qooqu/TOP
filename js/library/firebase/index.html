@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-firestore.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <ul id="book-list"></ul>
+        <form id="new-book">
+            <label for="title">title:</label><br>
+            <input type="text" id="title" name="title"><br>
+            <label for="author">author:</label><br>
+            <input type="text" id="author" name="author"><br>
+            <label for="pages">pages:</label><br>
+            <input type="text" id="pages" name="pages"><br>
+            <input type="submit" value="new book">
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
