@@ -1,0 +1,61 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#players {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input {
+    margin-left: 10px;
+    outline: none;
+    min-width: 50px;
+    border-bottom: 1px solid lightslategray;
+}
+
+.labelO {
+    padding-left: 50px;
+}
+
+#container * {
+    font-family: Montserrat;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1px;
+    background: black;
+}
+
+.square {
+    width: 30px;
+    height: 30px;
+    background: white;
+    padding: 10px;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#newGame {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background: lightgreen;
+    outline: none;
+}
