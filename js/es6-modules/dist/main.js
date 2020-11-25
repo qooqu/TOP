@@ -1,0 +1,1 @@
+(()=>{"use strict";document.body.appendChild(function(){const e=document.createElement("div");return e.innerHTML="Hi! My name is "+"alf",e}())})();
