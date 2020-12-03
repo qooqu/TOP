@@ -1,0 +1,39 @@
+todo notes
+
+projects is an object of project objects
+
+    projects = {
+        projectName: {project},
+        projectName: {project},
+        ...
+    }
+
+project object has name and todos
+
+    project = {
+        name,
+        todos
+    }
+
+todos is an array of todo objects
+
+    todos = [{todo}, {todo}, ...]
+
+todo object has title, description, dueDate, and priority
+
+    todo = {
+        title,
+        description,
+        dueDate,
+        priority
+    }
+
+new project
+
+    projects[projectName] = new Project(projectName)
+
+new todo
+
+    projectName = ... parse from form data
+    projects[projectName].todos.push(new Todo(...))
+    

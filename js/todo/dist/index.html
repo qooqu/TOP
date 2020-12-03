@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <title>TOP TODO</title>
+</head>
+
+<body>
+    <div id="container">
+        <form id="new-project">
+            <label for="title">title:</label>
+            <input type="text" id="title" name="title">
+            <input type="submit" value="new project">
+        </form>
+        <form id="new-todo">
+            <label for="title">title:</label>
+            <input type="text" id="title" name="title">
+            <label for="description">description:</label>
+            <input type="text" id="description" name="description">
+            <label for="dueDate">dueDate:</label>
+            <input type="text" id="dueDate" name="dueDate">
+            <label for="priority">priority:</label>
+            <input type="text" id="priority" name="priority">
+            <input type="submit" value="new todo">
+        </form>
+        <div id="projects">
+            <ul id="project-list"></ul>
+        </div>
+        <div id="todos">
+            <ul id="todo-list"></ul>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
