@@ -1,0 +1,32 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* #sliderDiv {
+    display: flex;
+    flex-direction: row;
+} */
+
+#sliderDiv > * {
+    display: inline-block;
+}
+
+/* img {
+    height: 500px;
+    width: auto;
+    padding: 20px;
+} */
+
+img {
+    transition-property: all;
+    transition-duration: 0.5s;
+}

@@ -1,3 +1,14 @@
+TODO
+
+starter-dir
+	add npm
+
+todo project
+	add localhost
+	date etc fields in todo
+	todo buttons
+
+
 object constructors
 
 	different ways of making objects
@@ -363,7 +374,7 @@ npm, ES6 modules, webpack, babel
 				},
 			};
 
-	babel
+	babel ... i haven't actually tried this yet
 
 		browsers lag behind new js features
 		babel transpiles modern js into old js that all browsers can understand
@@ -379,4 +390,11 @@ npm, ES6 modules, webpack, babel
 		`npm run build` will bundle the site to src
 		`npm run watch` will update the bundle as you make changes ... but you still have to refresh the browser to see the 		dev stuff
 		`npm run serve` will serve the site to localhost and hot reload any changes
-			
+
+	starter-dir
+
+		everything is set up
+		copy starter-dir, rename it, cd into it, and run `npm install`
+			note there's currently a bug. i got it to work by also running
+				npm install webpack webpack-cli --save
+				npm install webpack-dev-server --save-dev
