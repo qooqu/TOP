@@ -1,0 +1,1 @@
+(()=>{"use strict";(()=>{const t=Array.from(document.querySelectorAll("button"));function e(t){t.preventDefault();let e=t.target.nextElementSibling;t.target.textContent="///"==t.target.textContent?"X":"///",e.style.height="100px"==e.style.height?"0px":"100px",e.style.width="70px"==e.style.width?"0px":"70px"}console.log(t),t.forEach((t=>t.addEventListener("click",e)))})()})();
