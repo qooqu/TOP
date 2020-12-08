@@ -21,6 +21,7 @@ const initSlider = () => {
         sliderDiv.appendChild(img);
     });
 
+    state.indexCentered = state.imgsIn.length / 2 - 0.5;
     shiftImgs(-(state.imgsIn.length / 2 - 0.5));
     state.indexCentered = 0;
 

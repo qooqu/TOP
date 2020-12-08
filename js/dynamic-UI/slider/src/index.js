@@ -1,4 +1,5 @@
 import initSlider from "./initSlider";
+import shiftImgs from "./shiftImgs";
 
 let state = {
     imgsIn: [1, 2, 3, 4, 5],
@@ -12,3 +13,4 @@ let state = {
 export default state;
 
 initSlider();
+setInterval(shiftImgs, 5000, 1);
