@@ -1,4 +1,3 @@
-import state from "./index";
 import shiftImgs from "./shiftImgs";
 
 const handleBtnClick = (e) => {
