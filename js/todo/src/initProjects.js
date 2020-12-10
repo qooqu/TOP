@@ -1,15 +1,18 @@
+import state from ".";
+
 const initProjects = () => {
-
-    let projects;
-
     if (localStorage.projects) {
-        // let libraryJSON = localStorage.library.replace(/},/g, '}},').split('},');
-        // library = libraryJSON.map(book => JSON.parse(book));
+        state.projects = JSON.parse(localStorage.projects);
+        state.currentProject =
+            state.projects[Object.keys(state.projects).sort()[0]];
+        // console.log();
+        // let projectsSorted = Object.keys(projects)
+        //     .sort()
+        //     .map((key) => state.projects[key]);
+        // state.currentProject = projectsSorted[0];
     } else {
-        projects = {};
+        state.projects = {};
     }
+};
 
-    return projects;
-}
-
-export default initProjects
+export default initProjects;

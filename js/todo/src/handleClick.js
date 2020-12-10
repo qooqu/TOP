@@ -1,40 +1,48 @@
-import state from './index';
-import renderProjects from './renderProjects';
-import renderTodos from './renderTodos';
+import editTodoForm from "./editTodoForm";
+import state from "./index";
+import onChange from "./onChange";
 
 function handleClick(e) {
     e.preventDefault();
-    let id = e.target.id.split('-');
+    let id = e.target.id.split("-");
     let type = id[0];
-    let event = id[1];
+    let action = id[1];
+    let title = id[2];
 
-    if (type == 'project') {
-        let title = id[2];
-        if (event == 'select') {
+    if (type == "project") {
+        if (action == "select") {
             state.currentProject = state.projects[title];
-            renderTodos();
+            onChange();
         }
-        if (event == 'remove') {
-            if (state.projects[title].title == state.currentProject.title) {
-                state.currentProject = null;
+        if (action == "remove") {
+            if (title == state.currentProject.title) {
+                delete state.projects[title];
+                state.currentProject =
+                    state.projects[Object.keys(state.projects).sort()[0]];
+            } else {
+                delete state.projects[title];
             }
-            delete state.projects[title];
-            renderProjects();
+            onChange();
         }
     }
 
-    if (type == 'todo') {
-        let projectTitle = id[2];
-        let title = id[3];
-        if (event == 'edit') {
-            console.log(edit);
+    if (type == "todo") {
+        let todo = state.currentProject.todos[title];
+        if (action == "details") {
+            let liTxtDtls = document.getElementById(`todo-dtls-${todo.title}`);
+            liTxtDtls.classList.toggle("hidden");
         }
-        if (event == 'remove') {
-            // delete state.projects[projectTitle].todos[];
-            renderTodos();
+        if (action == "edit") {
+            let li = document.getElementById(`todo-li-${todo.title}`);
+            let children = li.querySelectorAll("*");
+            children.forEach((child) => child.remove());
+            li.appendChild(editTodoForm(todo));
+        }
+        if (action == "remove") {
+            delete state.currentProject.todos[title];
+            onChange();
         }
     }
+}
 
-};
-
-export default handleClick
+export default handleClick;

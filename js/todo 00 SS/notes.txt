@@ -1,10 +1,5 @@
 todo notes
 
-todos
-    ugly
-    restrict priority to numbers or to 'low, med high'
-    sort todos by priority?
-
 projects is an object of project objects
 
     projects = {
