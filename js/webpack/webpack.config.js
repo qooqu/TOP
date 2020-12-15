@@ -1,9 +1,26 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: {
+        index: "./src/index.js",
+        // print: "./src/print.js",
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: "webpage",
+            favicon: "./src/favicon.ico",
+            meta: {
+                author: "qooqu",
+                description:
+                    "This is a webpage. A 'page' on the web, if you will.",
+            },
+        }),
+    ],
     output: {
-        filename: "bundle.js",
+        filename: "[name].bundle.js",
         path: path.resolve(__dirname, "dist"),
     },
     module: {
@@ -19,18 +36,6 @@ module.exports = {
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: "asset/resource",
-            },
-            {
-                test: /\.m?js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: [
-                            ["@babel/preset-env", { targets: "defaults" }],
-                        ],
-                    },
-                },
             },
         ],
     },

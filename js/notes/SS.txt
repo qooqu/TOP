@@ -1,14 +1,3 @@
-TODO
-
-starter-dir
-	add npm
-
-todo project
-	add localhost
-	date etc fields in todo
-	todo buttons
-
-
 object constructors
 
 	different ways of making objects
@@ -350,22 +339,23 @@ npm, ES6 modules, webpack, babel
 		npm put all the dependency's code in node_modules. your code wants to access it with `import <package name>`. but browsers don't know how to connect them
 		further, not all browsers can understand ES6 import / export
 		webpack is a build step that addresses both issues
-		npm install webpack webpack-cli --save
-		npm install webpack-dev-server --save-dev
+		webpack dependencies ... here's the cli commands, but they will actually get installed by package.json
+			npm install webpack webpack-cli --save
+			npm install webpack-dev-server --save-dev
 		make webpack.config.js (see below)
 		make src and dist folders
 		put index.html in dist, put all your code in src with index.js as the entry point
 		webpack will create main.js in dist
 		point index.html at main.js in dist
 
-		webpack.config.js
+		webpack.config.js ... note this is over simplified ... see ./js/webpack
 
 			const path = require('path');
 
 			module.exports = {
 				entry: './src/index.js',
 				output: {
-					filename: 'main.js',
+					filename: 'bundle.js',
 					path: path.resolve(__dirname, 'dist'),
 				},
 				devServer: {
@@ -374,11 +364,12 @@ npm, ES6 modules, webpack, babel
 				},
 			};
 
-	babel ... i haven't actually tried this yet
+	babel
 
 		browsers lag behind new js features
 		babel transpiles modern js into old js that all browsers can understand
-		npm install @babel/core @babel/preset-env babel-loader --save
+		babel dependencies ... here's the cli command, but they will actually get installed by package.json
+			npm install @babel/core @babel/preset-env babel-loader --save
 		add babel rules to webpack.config.js
 
 	back to npm
@@ -393,8 +384,66 @@ npm, ES6 modules, webpack, babel
 
 	starter-dir
 
-		everything is set up
+		everything is set up (with simple webpack config which respects hard-coded html)
 		copy starter-dir, rename it, cd into it, and run `npm install`
-			note there's currently a bug. i got it to work by also running
-				npm install webpack webpack-cli --save
-				npm install webpack-dev-server --save-dev
+			note sometimes it bugs out. try:
+				method 1
+					npm clean-install
+				method 2
+					npm install webpack webpack-cli --save
+					npm install webpack-dev-server --save-dev
+
+async
+
+	client side js == js runtime and the stack + web api + task queue and the event loop + painting
+
+		https://www.youtube.com/watch?v=8aGhZQkoFbQ
+
+		js runtime and the stack
+
+			js runtime can only do one thing at a time
+			as it encounters tasks, it adds them to the top of the stack
+			it always works on whatever task is on top of the stack
+			when it finishes the task on top of the stack, it removes it and gets to work on the 'new' top-of-stack task
+
+				function a () {
+					b();
+				}
+				
+				function b() {}
+
+				a();
+
+				// stack: add a(), add b(), clear b(), clear a()
+
+		web api
+
+			web api is like a separate runtime with its own stack
+			when the js runtime adds an api call to the js stack, the call gets 'executed' by the js stack right away by adding it to the api stack. it is then cleared from the js stack, but might take a while to get executed on the api stack.
+			these api calls are things like network requests
+			they are called with a callback function: once the network request is resolved, do xyz
+			the api stack waits for the api call (eg network request) to resolve, then has to get the callback (eg do xyz) back to the js runtime
+
+		task queue and the event loop
+
+			the web api sends the callback to the task queue
+			the event loop watches the js stack. when it's empty it adds an item from the task queue
+
+		painting
+
+			in addition to orchestrating the above, the browser wants to 'paint' or refresh the UI at 60Hz (every 16.7ms)
+			painting can get slipped into the js stack by the event loop
+			therefore, slow tasks can block repainting and should be handled carefully
+
+	callback, Promise / .then, async / await
+
+		callback
+			callback on callback on callback gets hard to follow
+
+		Promise / .then
+			Promise is a built in constructor, like Array ... thing = new Promise( ... )
+			apparently there's some issue with this one too
+
+		async / await
+			syntactic sugar on Promise
+
