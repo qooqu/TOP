@@ -48,10 +48,12 @@ e.g. the 'book' namespace might include book.title, book.markAsRead(), etc
 
 this is when you just type it out
 
-    bob = {
-    	name = 'bob',
-    	grade = 12
-    }
+```js
+bob = {
+	name = 'bob',
+	grade = 12
+}
+```
 
 as far as I know, inheritance and prototype don't apply to literals
 
@@ -65,49 +67,56 @@ if you leave out 'new', weird things will happen
 
 ### basic version
 
-    function Student(name, grade) {
-    	this.grade = grade
-    	this.name = name
-    }
-
-    let bob = new Student('bob', 5);
-    bob.name // 'bob'
+```js
+function Student(name, grade) {
+    this.grade = grade;
+    this.name = name;
+}
+let bob = new Student("bob", 5);
+bob.name; // 'bob'
+```
 
 ### with method ... wrong way (method will be repeated in each child object)
 
-    function Student(name, grade) {
-    	this.name = name
-    	this.grade = grade
-    	this.sayName = function() {
-    		console.log(`Hi I'm ${name}.`)
-    	}
-    }
+```js
+function Student(name, grade) {
+    this.name = name;
+    this.grade = grade;
+    this.sayName = function () {
+        console.log(`Hi I'm ${name}.`);
+    };
+}
+```
 
 ### with method ... right way (method lives in only one place, js will use the protoype chain to find it)
 
-    function Student(name, grade) {
-    	this.name = name
-    	this.grade = grade
-    }
+```js
+function Student(name, grade) {
+    this.name = name;
+    this.grade = grade;
+}
 
-    Student.prototype.sayName = function() {
-    	console.log(`Hi I'm ${this.name}.`)
-    }
+Student.prototype.sayName = function () {
+    console.log(`Hi I'm ${this.name}.`);
+};
 
-    let bob = new Student('bob', 5);
-    bob.sayName // Hi I'm bob.
+let bob = new Student("bob", 5);
+bob.sayName; // Hi I'm bob.
+```
 
 #### inheritance ... make a 'child' constructor
 
-    function EighthGrader(name) {
-    	this.name = name
-    	this.grade = 8
-    }
+```js
+function EighthGrader(name) {
+    this.name = name;
+    this.grade = 8;
+}
 
-    EighthGrader.prototype = Object.create(Student.prototype)
+EighthGrader.prototype = Object.create(Student.prototype);
 
-    let bob = new EighthGrader('bob');
-    bob.sayName // Hi I'm bob.
+let bob = new EighthGrader("bob");
+bob.sayName; // Hi I'm bob.
+```
 
 ## factory function
 
@@ -117,14 +126,16 @@ doesn't need the 'new' keyword to invoke
 
 includes a return statement, so you can have private members
 
-    const personFactory = (name, age) => {
-    	const sayHello = () => console.log('hello!');
-    	return { name, age, sayHello };
-    };
+```js
+const personFactory = (name, age) => {
+    const sayHello = () => console.log("hello!");
+    return { name, age, sayHello };
+};
 
-    const jeff = personFactory('jeff', 27);
-    console.log(jeff.name); // 'jeff'
-    jeff.sayHello(); // calls the function and logs 'hello!'
+const jeff = personFactory("jeff", 27);
+console.log(jeff.name); // 'jeff'
+jeff.sayHello(); // calls the function and logs 'hello!'
+```
 
 ### privacy
 
@@ -132,18 +143,20 @@ only exposes members in the return statement
 
 closure: functions retain their scope even if they are passed around and called outside of that scope.
 
-    const FactoryFunction = (string) => {
-    	const capitalizeString = () => string.toUpperCase();
-    	const printString = () => console.log(`----${capitalizeString()}----`);
-    	return { printString };
-    };
+```js
+const FactoryFunction = (string) => {
+    const capitalizeString = () => string.toUpperCase();
+    const printString = () => console.log(`----${capitalizeString()}----`);
+    return { printString };
+};
 
-    const taco = FactoryFunction('taco');
+const taco = FactoryFunction("taco");
 
-    printString(); // ERROR!!
-    capitalizeString(); // ERROR!!
-    taco.capitalizeString(); // ERROR!!
-    taco.printString(); // this prints "----TACO----"
+printString(); // ERROR!!
+capitalizeString(); // ERROR!!
+taco.capitalizeString(); // ERROR!!
+taco.printString(); // this prints "----TACO----"
+```
 
 capitalizeString is a private function and printString is public
 
@@ -157,22 +170,24 @@ In other words, even though our objects might only do one or two things, we are 
 
 if the 'parent' returns something that you want the child to have, you can inherit it like this
 
-    const Person = (name) => {
-    const sayName = () => console.log(`my name is ${name}`)
-    	return {sayName}
-    }
+```js
+const Person = (name) => {
+    const sayName = () => console.log(`my name is ${name}`);
+    return { sayName };
+};
 
-    const Nerd = (name) => {
-    	// create a person and pull out the sayName function with destructuring assignment syntax
-    	const {sayName} = Person(name)
-    	const doSomethingNerdy = () => console.log('nerd stuff')
-    	return {sayName, doSomethingNerdy}
-    }
+const Nerd = (name) => {
+    // create a person and pull out the sayName function with destructuring assignment syntax
+    const { sayName } = Person(name);
+    const doSomethingNerdy = () => console.log("nerd stuff");
+    return { sayName, doSomethingNerdy };
+};
 
-    const jeff = Nerd('jeff')
+const jeff = Nerd("jeff");
 
-    jeff.sayName() //my name is jeff
-    jeff.doSomethingNerdy() // nerd stuff
+jeff.sayName(); //my name is jeff
+jeff.doSomethingNerdy(); // nerd stuff
+```
 
 ## module pattern ... different from ES6 modules (i.e. import / export modules)
 
@@ -182,44 +197,48 @@ basically a single use FF
 
 example 1
 
-    const calculator = (() => {
-    	const add = (a, b) => a + b;
-    	const sub = (a, b) => a - b;
-    	const mul = (a, b) => a \* b;
-    	const div = (a, b) => a / b;
-    	return {
-    		add,
-    		sub,
-    		mul,
-    		div,
-    	};
-    })();
+```js
+const calculator = (() => {
+	const add = (a, b) => a + b;
+	const sub = (a, b) => a - b;
+	const mul = (a, b) => a \* b;
+	const div = (a, b) => a / b;
+	return {
+		add,
+		sub,
+		mul,
+		div,
+	};
+})();
 
-    calculator.add(3,5) // 8
-    calculator.sub(6,2) // 4
-    calculator.mul(14,5534) // 77476
+calculator.add(3,5) // 8
+calculator.sub(6,2) // 4
+calculator.mul(14,5534) // 77476
+```
 
 example 2 (note the underscores are a style thing, not required)
 
-    var myModule = (function() {
-    	'use strict';
+```js
+var myModule = (function () {
+    "use strict";
 
-    	var _privateProperty = 'Hello World';
+    var _privateProperty = "Hello World";
 
-    	function _privateMethod() {
-    		console.log(_privateProperty);
-    	}
+    function _privateMethod() {
+        console.log(_privateProperty);
+    }
 
-    	return {
-    		publicMethod: function() {
-    		_privateMethod();
-    		}
-    	};
-    })();
+    return {
+        publicMethod: function () {
+            _privateMethod();
+        },
+    };
+})();
 
-    myModule.publicMethod(); // outputs 'Hello World'
-    console.log(myModule._privateProperty); // is undefined protected by the module closure
-    myModule._privateMethod(); // is TypeError protected by the module closure
+myModule.publicMethod(); // outputs 'Hello World'
+console.log(myModule._privateProperty); // is undefined protected by the module closure
+myModule._privateMethod(); // is TypeError protected by the module closure
+```
 
 ## classes
 
@@ -231,47 +250,59 @@ js converts all the class stuff to ordinary constructors and prototypes behind t
 
 note the functions are outside of the class's constructor for inheritance purposes
 
-    class Person {
+```js
+class Person {
     constructor(first, last, age, gender, interests) {
-    	this.name = {
-    		first,
-    		last
-    	};
-    	this.age = age;
-    	this.gender = gender;
-    	this.interests = interests;
+        this.name = {
+            first,
+            last,
+        };
+        this.age = age;
+        this.gender = gender;
+        this.interests = interests;
     }
 
     greeting() {
-    	console.log(`Hi! I'm ${this.name.first}`);
-    };
-
-    farewell() {
-    	console.log(`${this.name.first} has left the building. Bye for now!`);
-    };
+        console.log(`Hi! I'm ${this.name.first}`);
     }
 
-    let han = new Person('Han', 'Solo', 25, 'male', ['Smuggling']);
-    han.greeting(); // Hi! I'm Han
+    farewell() {
+        console.log(`${this.name.first} has left the building. Bye for now!`);
+    }
+}
+
+let han = new Person("Han", "Solo", 25, "male", ["Smuggling"]);
+han.greeting(); // Hi! I'm Han
+```
 
 ### inheritance
 
-    class Teacher extends Person {
-    	constructor(first, last, age, gender, interests, subject, grade) {
-    		// need to call 'super', which will call the class that's getting extended (in this case Person)
-    		super(first, last, age, gender, interests);
+```js
+class Teacher extends Person {
+    constructor(first, last, age, gender, interests, subject, grade) {
+        // need to call 'super', which will call the class that's getting extended (in this case Person)
+        super(first, last, age, gender, interests);
 
-    		// subject and grade are specific to Teacher
-    		this.subject = subject;
-    		this.grade = grade;
-    	}
+        // subject and grade are specific to Teacher
+        this.subject = subject;
+        this.grade = grade;
     }
+}
 
-    let snape = new Teacher('Severus', 'Snape', 58, 'male', ['Potions'], 'Dark arts', 5);
-    snape.greeting(); // Hi! I'm Severus.
-    snape.farewell(); // Severus has left the building. Bye for now.
-    snape.age // 58
-    snape.subject; // Dark arts
+let snape = new Teacher(
+    "Severus",
+    "Snape",
+    58,
+    "male",
+    ["Potions"],
+    "Dark arts",
+    5
+);
+snape.greeting(); // Hi! I'm Severus.
+snape.farewell(); // Severus has left the building. Bye for now.
+snape.age; // 58
+snape.subject; // Dark arts
+```
 
 ### privacy
 
@@ -279,50 +310,62 @@ supported by chrome and edge, but not by ff or safari
 
 so you can use this syntax, but only if you add babel to your project
 
-    class ClassWithPrivateMethod {
-    	#privateMethod() {
-    		return 'hello world'
-    	}
-
-    	getPrivateMessage() {
-    		return this.#privateMethod()
-    	}
+```js
+class ClassWithPrivateMethod {
+    #privateMethod() {
+        return "hello world";
     }
 
-    const instance = new ClassWithPrivateMethod()
-    console.log(instance.getPrivateMessage()) // expected output: "hello worl​d"
+    getPrivateMessage() {
+        return this.#privateMethod();
+    }
+}
+
+const instance = new ClassWithPrivateMethod();
+console.log(instance.getPrivateMessage()); // expected output: "hello worl​d"
+```
 
 ### classes have a special syntax around getters and setters
 
 this is a dumb example, but they are useful when you need to run some code on a value before storing / retrieving
 
-    class Teacher extends Person {
-    	constructor(first, last, age, gender, interests, subject, grade) {
-    		super(first, last, age, gender, interests);
-    		// subject and grade are specific to Teacher
-    		this._subject = subject;
-    		this.grade = grade;
-    	}
-
-    	get subject() {
-    		return this._subject;
-    	}
-
-    	set subject(newSubject) {
-    	this._subject = newSubject;
-    	}
+```js
+class Teacher extends Person {
+    constructor(first, last, age, gender, interests, subject, grade) {
+        super(first, last, age, gender, interests);
+        // subject and grade are specific to Teacher
+        this._subject = subject;
+        this.grade = grade;
     }
 
-    let snape = new Teacher('Severus', 'Snape', 58, 'male', ['Potions'], 'Dark arts', 5);
+    get subject() {
+        return this._subject;
+    }
 
-    // Check the default value
-    console.log(snape.subject) // Returns "Dark arts"
+    set subject(newSubject) {
+        this._subject = newSubject;
+    }
+}
 
-    // Change the value
-    snape.subject = "Balloon animals" // Sets _subject to "Balloon animals"
+let snape = new Teacher(
+    "Severus",
+    "Snape",
+    58,
+    "male",
+    ["Potions"],
+    "Dark arts",
+    5
+);
 
-    // Check it again and see if it matches the new value
-    console.log(snape.subject) // Returns "Balloon animals"
+// Check the default value
+console.log(snape.subject); // Returns "Dark arts"
+
+// Change the value
+snape.subject = "Balloon animals"; // Sets _subject to "Balloon animals"
+
+// Check it again and see if it matches the new value
+console.log(snape.subject); // Returns "Balloon animals"
+```
 
 # npm, ES6 modules, webpack, babel
 
@@ -351,8 +394,10 @@ package.json should be included in git, node_modules should not
 
 exclude all node_modules by putting `.gitignore` at root with these lines
 
-    # Ignore node_modules folder
-    node_modules
+```js
+# Ignore node_modules folder
+node_modules
+```
 
 if you clone a repo, it should already have a package.json
 
@@ -386,8 +431,10 @@ webpack is a build step that addresses both issues
 
 webpack dependencies ... here's the cli commands, but they will actually get installed by package.json
 
-    npm install webpack webpack-cli --save
-    npm install webpack-dev-server --save-dev
+```js
+npm install webpack webpack-cli --save
+npm install webpack-dev-server --save-dev
+```
 
 make webpack.config.js (see below)
 
@@ -399,21 +446,23 @@ webpack will create main.js in dist
 
 point index.html at main.js in dist
 
-    // webpack.config.js ... note this is over simplified ... see ./js/webpack
+```js
+// webpack.config.js ... note this is over simplified ... see ./js/webpack
 
-    const path = require('path');
+const path = require("path");
 
-    module.exports = {
-    	entry: './src/index.js',
-    	output: {
-    		filename: 'bundle.js',
-    		path: path.resolve(__dirname, 'dist'),
-    	},
-    	devServer: {
-    		contentBase: path.resolve(__dirname, "dist"),
-    		watchContentBase: true,
-    	},
-    };
+module.exports = {
+    entry: "./src/index.js",
+    output: {
+        filename: "bundle.js",
+        path: path.resolve(__dirname, "dist"),
+    },
+    devServer: {
+        contentBase: path.resolve(__dirname, "dist"),
+        watchContentBase: true,
+    },
+};
+```
 
 ## babel
 
@@ -423,7 +472,9 @@ babel transpiles modern js into old js that all browsers can understand
 
 babel dependencies ... here's the cli command, but they will actually get installed by package.json
 
-    npm install @babel/core @babel/preset-env babel-loader --save
+```js
+npm install @babel/core @babel/preset-env babel-loader --save
+```
 
 add babel rules to webpack.config.js
 
@@ -431,12 +482,14 @@ back to npm
 
 add to package.json scripts
 
-    "build": "webpack --progress --mode=production",
-    "watch": "webpack --progress --watch"
-    "serve": "webpack serve --mode development --env development"
-    `npm run build` will bundle the site to src
-    `npm run watch` will update the bundle as you make changes ... but you still have to refresh the browser to see the dev stuff
-    `npm run serve` will serve the site to localhost and hot reload any changes
+```js
+"build": "webpack --progress --mode=production",
+"watch": "webpack --progress --watch"
+"serve": "webpack serve --mode development --env development"
+`npm run build` will bundle the site to src
+`npm run watch` will update the bundle as you make changes ... but you still have to refresh the browser to see the dev stuff
+`npm run serve` will serve the site to localhost and hot reload any changes
+```
 
 ## starter-dir
 
@@ -446,11 +499,13 @@ copy starter-dir, rename it, cd into it, and run `npm install`
 
 note sometimes it bugs out. try:
 
-    method 1
-    	npm clean-install
-    method 2
-    	npm install webpack webpack-cli --save
-    	npm install webpack-dev-server --save-dev
+```js
+method 1
+	npm clean-install
+method 2
+	npm install webpack webpack-cli --save
+	npm install webpack-dev-server --save-dev
+```
 
 # async
 
@@ -472,14 +527,17 @@ it always works on whatever task is on top of the stack
 
 when it finishes the task on top of the stack, it removes it and gets to work on the 'new' top-of-stack task
 
-    function a () {
-    	b();
-    }
+```js
+function a() {
+    b();
+}
 
-    function b() {}
-    	a();
+function b() {
+    a();
+}
 
-    // stack: add a(), add b(), clear b(), clear a()
+// stack: add a(), add b(), clear b(), clear a()
+```
 
 ### web api
 
@@ -513,13 +571,23 @@ therefore, slow tasks can block repainting and should be handled carefully
 
 callback on callback on callback gets hard to follow
 
-    chooseToppings(function(toppings) {
-        placeOrder(toppings, function(order) {
-            collectOrder(order, function(pizza) {
-                eatPizza(pizza);
-            }, failureCallback);
-        }, failureCallback);
-    }, failureCallback);
+```js
+chooseToppings(function (toppings) {
+    placeOrder(
+        toppings,
+        function (order) {
+            collectOrder(
+                order,
+                function (pizza) {
+                    eatPizza(pizza);
+                },
+                failureCallback
+            );
+        },
+        failureCallback
+    );
+}, failureCallback);
+```
 
 ### Promise / .then
 
@@ -537,69 +605,244 @@ i.e. if a `promise` is `fulfilled`, send the response to whatever is in `.then()
 
 each `.then()` creates a new `promise`
 
-    chooseToppings()
-        .then(function(toppings) {
-            return placeOrder(toppings);
-        })
-        .then(function(order) {
-            return collectOrder(order);
-        })
-        .then(function(pizza) {
-            eatPizza(pizza);
-        })
-        .catch(failureCallback);
+```js
+chooseToppings()
+    .then(function (toppings) {
+        return placeOrder(toppings);
+    })
+    .then(function (order) {
+        return collectOrder(order);
+    })
+    .then(function (pizza) {
+        eatPizza(pizza);
+    })
+    .catch(failureCallback);
+```
 
 same thing, but clearer
 
-    chooseToppings()
-        .then(toppings => placeOrder(toppings))
-        .then(order => collectOrder(order))
-        .then(pizza => eatPizza(pizza))
-        .catch(failureCallback);
+```js
+chooseToppings()
+    .then((toppings) => placeOrder(toppings))
+    .then((order) => collectOrder(order))
+    .then((pizza) => eatPizza(pizza))
+    .catch(failureCallback);
+```
 
 same, but commented
 
-    chooseToppings()
-        // when chooseToppings is done, take its returned value (toppings) and send it to placeOrder
-        .then(toppings => placeOrder(toppings))
-        // when placeOrder is done, take its returned value (order) and send it to collectOrder
-        .then(order => collectOrder(order))
-        // when collectOrder is done, take its returned value (pizza) and send it to eatPizza
-        .then(pizza => eatPizza(pizza))
-        // if something goes wrong at any step, send the error to failureCallback
-        .catch(failureCallback);
+```js
+chooseToppings()
+    // when chooseToppings is done, take its returned value (toppings) and send it to placeOrder
+    .then((toppings) => placeOrder(toppings))
+    // when placeOrder is done, take its returned value (order) and send it to collectOrder
+    .then((order) => collectOrder(order))
+    // when collectOrder is done, take its returned value (pizza) and send it to eatPizza
+    .then((pizza) => eatPizza(pizza))
+    // if something goes wrong at any step, send the error to failureCallback
+    .catch(failureCallback);
+```
 
 you can also do it this way
 
-    let step1 = chooseToppings(); // stores the promise object returned by chooseToppings in step1
-    let step2 = step1.then(toppings => placeOrder(toppings));
-    let step3 = step2.then(order => collectOrder(order));
-    let step4 = step3.then(pizza => eatPizza(pizza));
-    let errorCase = step4.catch(failureCallback);
+```js
+let step1 = chooseToppings(); // stores the promise object returned by chooseToppings in step1
+let step2 = step1.then((toppings) => placeOrder(toppings));
+let step3 = step2.then((order) => collectOrder(order));
+let step4 = step3.then((pizza) => eatPizza(pizza));
+let errorCase = step4.catch(failureCallback);
+```
 
 you can also make it do something after it `resolves` (regardless of whether it's `fulfilled` or `rejected`) with `.finally()`
 
-    chooseToppings()
-        .then(toppings => placeOrder(toppings))
-        .then(order => collectOrder(order))
-        .then(pizza => eatPizza(pizza))
-        .catch(failureCallback)
-        .finally(drink());
+```js
+chooseToppings()
+    .then((toppings) => placeOrder(toppings))
+    .then((order) => collectOrder(order))
+    .then((pizza) => eatPizza(pizza))
+    .catch(failureCallback)
+    .finally(drink());
+```
 
 promises are most commonly seen with built in / pre-defined promise objects like `fetch(url)`
 
 you can wait for multiple promises to resolve with `Promise.all()`
 
-    let a = fetch(url1);
-    let b = fetch(url2);
-    let c = fetch(url3);
+```js
+let a = fetch(url1);
+let b = fetch(url2);
+let c = fetch(url3);
 
-    Promise.all([a, b, c]).then(values => {
-        ...
-    });
+Promise.all([a, b, c]).then((values) => {
+    // ...
+});
+```
 
 you can also create custom promise objects as `thing = new Promise( ... )`
 
 ### async / await
 
-syntactic sugar on Promise
+#### basics
+
+syntactic sugar on promises
+
+`async` functions / `await` keyword
+
+`async` has two functions
+
+first, it acts like `new Promise( ... )`
+
+```js
+function hello() {
+    return "Hello";
+}
+hello(); // returns "Hello"
+
+async function hello() {
+    return "Hello";
+}
+hello(); // returns a Promise
+```
+
+second, it turns a function into an environment where `await` can be used
+
+`await` is similar to `.then()`
+
+it pauses your code until the promise fulfills, then returns the resulting value
+
+#### simple example
+
+```js
+function getResult() {
+    let result = await promiseBasedFunction(input);
+    // getResult is a regular function, so await doesn't do anything
+    useThatResult(result); // will probably run before result is defined
+}
+
+async function getResult() {
+    let result = await promiseBasedFunction(input);
+    // since, getResult is an async function, await causes execution to pause here until promiseBasedFuncion is resolved
+    useThatResult(result); // this will run just fine
+}
+```
+
+#### more realistic example
+
+promises version
+
+```js
+fetch("coffee.jpg")
+    // once fetch is done
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            return response.blob();
+        }
+    })
+    // once response.blob() is done
+    .then((myBlob) => {
+        let objectURL = URL.createObjectURL(myBlob);
+        let image = document.createElement("img");
+        image.src = objectURL;
+        document.body.appendChild(image);
+    })
+    .catch((e) => {
+        console.log(
+            "There has been a problem with your fetch operation: " + e.message
+        );
+    });
+```
+
+async / await version ... note the code is wrapped in an async function
+
+```js
+async function myFetch() {
+    let response = await fetch("coffee.jpg");
+    // await ensures nothing happens until fetch is done
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    } else {
+        let myBlob = await response.blob();
+        // await ensures nothing happens until response.blob() is done
+        let objectURL = URL.createObjectURL(myBlob);
+        let image = document.createElement("img");
+        image.src = objectURL;
+        document.body.appendChild(image);
+    }
+}
+
+myFetch().catch((e) => {
+    console.log(
+        "There has been a problem with your fetch operation: " + e.message
+    );
+});
+```
+
+refactor the catch to try / catch
+
+```js
+async function myFetch() {
+    try {
+        let response = await fetch("coffee.jpg");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            let myBlob = await response.blob();
+            let objectURL = URL.createObjectURL(myBlob);
+            let image = document.createElement("img");
+            image.src = objectURL;
+            document.body.appendChild(image);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+myFetch();
+```
+
+#### Promise.all()
+
+you can still use `Promise.all()`
+
+```js
+async function whatever() {
+    let a = fetch(url1);
+    let b = fetch(url2);
+    let c = fetch(url3);
+
+    let values = await Promise.all([a, b, c]);
+    // ...
+}
+```
+
+#### multiple awaits
+
+say you make a timeout promise
+
+this will take 9 seconds
+
+```js
+async function timeTest() {
+    // calling the promise directly with await blocks the next line
+    await timeoutPromise(3000);
+    await timeoutPromise(3000);
+    await timeoutPromise(3000);
+}
+```
+
+this will take 3 seconds
+
+```js
+async function timeTest() {
+    // const causes the promise to be called, but doesn't block the next line
+    const timeoutPromise1 = timeoutPromise(3000);
+    const timeoutPromise2 = timeoutPromise(3000);
+    const timeoutPromise3 = timeoutPromise(3000);
+
+    await timeoutPromise1;
+    await timeoutPromise2;
+    await timeoutPromise3;
+}
+```
