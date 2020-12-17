@@ -476,9 +476,32 @@ babel dependencies ... here's the cli command, but they will actually get instal
 npm install @babel/core @babel/preset-env babel-loader --save
 ```
 
+babel core 7.12.10 doesn't by default have support for async / await, so you also have to install
+
+```js
+npm install --save-dev @babel/plugin-transform-runtime
+npm install --save-dev @babel/runtime
+```
+
 add babel rules to webpack.config.js
 
-back to npm
+```js
+{
+    test: /\.m?js$/,
+    exclude: /node_modules/,
+    use: {
+        loader: "babel-loader",
+        options: {
+            presets: [
+                ["@babel/preset-env", { targets: "defaults" }],
+            ],
+            plugins: ["@babel/transform-runtime"],
+        },
+    },
+},
+```
+
+## back to npm
 
 add to package.json scripts
 
@@ -846,3 +869,9 @@ async function timeTest() {
     await timeoutPromise3;
 }
 ```
+
+#### babel issue
+
+babel needs some tweaking to get it to work with async await. see babel section up above
+
+
