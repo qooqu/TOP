@@ -33,15 +33,15 @@ const getImgSrc = async function (searchTerm) {
 const getWeather = async function (where) {
     try {
         let response = await fetch(
-            `http://api.openweathermap.org/data/2.5/weather?q=${where}&APPID=13df276a9ad2a9aaa3c0a91ff50c35c3`,
+            `https://api.openweathermap.org/data/2.5/weather?q=${where}&APPID=13df276a9ad2a9aaa3c0a91ff50c35c3`,
             { mode: "cors" }
         );
-        // if (!response.ok) {
-        // throw new Error(`HTTP error! status: ${response.status}`);
-        // } else {
-        let responseJSON = await response.json();
-        return responseJSON.weather[0].description;
-        // }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+            let responseJSON = await response.json();
+            return responseJSON.weather[0].description;
+        }
     } catch (e) {
         return "say what";
     }
