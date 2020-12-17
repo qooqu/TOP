@@ -36,12 +36,12 @@ const getWeather = async function (where) {
             `http://api.openweathermap.org/data/2.5/weather?q=${where}&APPID=13df276a9ad2a9aaa3c0a91ff50c35c3`,
             { mode: "cors" }
         );
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        } else {
-            let responseJSON = await response.json();
-            return responseJSON.weather[0].description;
-        }
+        // if (!response.ok) {
+        // throw new Error(`HTTP error! status: ${response.status}`);
+        // } else {
+        let responseJSON = await response.json();
+        return responseJSON.weather[0].description;
+        // }
     } catch (e) {
         return "say what";
     }
