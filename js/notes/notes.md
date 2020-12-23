@@ -874,4 +874,24 @@ async function timeTest() {
 
 babel needs some tweaking to get it to work with async await. see babel section up above
 
+# react
 
+js library
+
+pages broken down into components
+
+data lives in a special object called state
+
+state can be passed down to child components, but not up
+
+the child component receives state on a special object called props
+
+a child component can have its own state and receive props
+
+state can be accessed with built in functions eg setState()
+
+components can be written as classes or as functions
+
+functions are gaining in popularity
+
+to host a react site on github, it has to be in its own repo
