@@ -894,4 +894,118 @@ components can be written as classes or as functions
 
 functions are gaining in popularity
 
-to host a react site on github, it has to be in its own repo
+```js
+/// class
+class Welcome extends React.Component {
+    render() {
+        return <h1>Hello, {this.props.name}</h1>;
+    }
+}
+
+// function
+function Welcome(props) {
+    return <h1>Hello, {props.name}</h1>;
+}
+```
+
+to host a react site on github, it has to be in its own repo [link](https://blog.usejournal.com/how-to-deploy-your-react-app-into-github-pages-b2c96292b18e)
+
+## class components
+
+extend react base Component
+
+if it has state, include constructor / super
+
+all must have render()
+
+### state
+
+define state in constructor
+
+modify it later with setState() ... I think best practice is to **not** reference state directly in setState
+
+```js
+class Example extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            thing: someInitialVale,
+        };
+    }
+
+    someFunction() {
+        let tempThing = this.state.thing;
+        tempThing = tempThing + 1;
+        this.setState({
+            thing: tempThing,
+        });
+    }
+
+    //etc
+}
+```
+
+### lifecycle methods
+
+make things happen on: mounting (creation in the DOM), updating, or unmounting
+
+#### order in which lifecycle methods are called, per phase
+
+##### mounting
+
+1. constructor()
+2. render() ... note: must be pure. ie can't call useState()
+3. componentDidMount() ... could be used for setTimeOut()
+
+##### updating
+
+1. render() ... note: must be pure. ie can't call useState()
+2. componentDidUpdate() ... important to compare old and new props before executing
+
+##### unmounting
+
+1. componentWillUnmount() ... important to clear things like setTimeOut()
+
+## functional components
+
+**hooks** allow functional components to have lifecycle and state
+
+### state hook
+
+useState() ... very weird
+
+```js
+const [thing, setThing] = useState(initialValue);
+const handleClickOrWhatever = () => {
+    setThing(thing + 1);
+};
+
+// basically equivalent to class based
+this.state = { thing: initialValue };
+const handleClickOrWhatever = () => {
+    setState({ thing: this.state.thing + 1 });
+};
+```
+
+```js
+import React, { useState } from "react";
+function Example() {
+    // Declare a new state variable, which we'll call "count"  const [count, setCount] = useState(0);
+    return (
+        <div>
+            <p>You clicked {count} times</p>
+            <button onClick={() => setCount(count + 1)}>Click me</button>
+        </div>
+    );
+}
+```
+
+### lifecycle hooks
+
+all of the stuff you can do with class based lifecycle methods is available through the useEffect() hook, but cleaner and fewer pitfalls
+
+TOP has some stuff that looks like it's not best practice (TOP is really into the dependency array, while reactjs.org ignores it)
+
+```
+
+```
