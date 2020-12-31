@@ -908,7 +908,7 @@ function Welcome(props) {
 }
 ```
 
-to host a react site on github, it has to be in its own repo [link](https://blog.usejournal.com/how-to-deploy-your-react-app-into-github-pages-b2c96292b18e)
+hosting on github is a pain. see below
 
 ## class components
 
@@ -1009,3 +1009,24 @@ TOP has some stuff that looks like it's not best practice (TOP is really into th
 ```
 
 ```
+
+## hosting on github
+
+[link](https://blog.usejournal.com/how-to-deploy-your-react-app-into-github-pages-b2c96292b18e)
+[link](https://www.digitalocean.com/community/tutorials/how-to-push-an-existing-project-to-github)
+
+to host a react site on github, it has to be in its own repo
+go up to programming (above top)
+npx create-react-app project-name
+copy all the files over from top/js/react
+npm install ... to get any regular project dependencies
+npm install gh-pages --save-dev
+package.json ... add homepage property and deploy scripts per article linked above
+github ... make a new repo
+git init
+git add .
+git commit -m 'blah'
+git remote add origin git@github.com:[...].git
+// git push -u -f origin main
+npm run deploy
+github ... settings / github pages / set source to gh-pages
