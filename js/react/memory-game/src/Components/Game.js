@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./Card";
 
 function Game() {
@@ -136,6 +136,10 @@ function Game() {
         setMessage("go for it!");
         scrambleThings();
     }
+
+    useEffect(() => {
+        newGame();
+    }, []);
 
     return (
         <div id="Game">
