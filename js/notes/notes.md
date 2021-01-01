@@ -1018,8 +1018,9 @@ TOP has some stuff that looks like it's not best practice (TOP is really into th
 to host a react site on github, it has to be in its own repo
 go up to programming (above top)
 npx create-react-app project-name
-copy all the files over from top/js/react
+copy all the files over from top/js/react ... don't forget package.json
 npm install ... to get any regular project dependencies
+yarn start ... make sure it's working
 npm install gh-pages --save-dev
 package.json ... add homepage property and deploy scripts per article linked above
 github ... make a new repo
