@@ -1,0 +1,133 @@
+@font-face {
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2)
+        format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+        U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+        U+2215, U+FEFF, U+FFFD;
+}
+
+body {
+    margin: 0px;
+}
+
+#root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#root * {
+    font-family: "Montserrat";
+}
+
+#container {
+    width: 60%;
+}
+
+nav {
+    padding: 0rem 1rem 0rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background: ghostwhite; */
+    border: 1px solid gainsboro;
+    box-shadow: 0.1rem 0.1rem 0.1rem gainsboro;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
+}
+
+#nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+#shop-top,
+#cart-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    /* width: 100%; */
+}
+
+#cards a {
+    color: black;
+    text-decoration: none;
+    width: 30%;
+}
+
+.card {
+    padding: 1rem;
+    border: 1px solid gainsboro;
+    box-shadow: 0.1rem 0.1rem 0.1rem gainsboro;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* width: 25%; */
+}
+
+.card div {
+    margin-top: 0.5rem;
+}
+
+.no-image {
+    width: 146px;
+    height: 204px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: gainsboro;
+}
+
+.detail-outer {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.detail-inner {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+input {
+    font-family: inherit;
+    font-size: inherit;
+    width: 50%;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: gainsboro;
+    padding: 0.25rem;
+    /* width: 25%; */
+}
