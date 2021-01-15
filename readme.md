@@ -1,6 +1,6 @@
 # welcome
 
-I'm working my way through the [The Odin Project](https://theodinproject.com/about), an open source curriculum for full stack JS. This repo holds all my project work.
+I'm working my way through the [The Odin Project](https://theodinproject.com/about), an open source curriculum for full stack JS. I do all of my TOP work in this repo.
 
 In addition to viewing the source, you can see some projects live on gh pages (links below).
 
@@ -84,7 +84,7 @@ xxxx |
 xxxx |
 simple game with TDD ... in progress
 
-## to come
+## more to come
 
 ### UX
 
