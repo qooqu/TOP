@@ -1016,18 +1016,54 @@ TOP has some stuff that looks like it's not best practice (TOP is really into th
 [link](https://www.digitalocean.com/community/tutorials/how-to-push-an-existing-project-to-github)
 
 to host a react site on github, it has to be in its own repo
-go up to programming (above top)
-npx create-react-app project-name
-copy all the files over from top/js/react ... don't forget package.json
-npm install ... to get any regular project dependencies
-yarn start ... make sure it's working
-npm install gh-pages --save-dev
-package.json ... add homepage property and deploy scripts per article linked above
-github ... make a new repo
-git init
-git add .
-git commit -m 'blah'
-git remote add origin git@github.com:[...].git
-// git push -u -f origin main
-npm run deploy
-github ... settings / github pages / set source to gh-pages
+
+1. go up to programming (above top)
+1. npx create-react-app project-name
+1. copy all the files over from top/js/react ... don't forget package.json
+1. npm install ... to get any regular project dependencies
+1. yarn start ... make sure it's working
+1. npm install gh-pages --save-dev
+1. package.json ... add homepage property and deploy scripts per article linked above
+1. github ... make a new repo
+1. git init
+1. git add .
+1. git commit -m 'blah'
+1. git remote add origin git@github.com:[...].git
+1. npm run deploy
+1. github ... settings / github pages / set source to gh-pages
+
+if you're using BrowserRouter, the github hosted project will have an issue
+
+-   the root url will be `qooqu.github.io/project`, but your links will go to `qooqu.github.io/link` instead of `qooqu.github.io/project/link`
+-   refresh and back will also be broken
+
+to fix the issue, use `BrowserRouter / basename`
+
+-   [discussion](https://github.com/facebook/create-react-app/issues/1765)
+-   [docs](https://reactrouter.com/web/api/BrowserRouter/basename-string)
+-   see top-js-react-shop
+
+# testing
+
+'unit' testing refers to two things
+
+-   code should be broken into units
+    -- each unit is responsible for only one thing
+-   each test should test only one thing
+
+grossly exaggerated example
+
+-   a shopping site could be broken into 'shelves' and 'cart'
+-   shelves testing would be broken into 'get items' and 'display items'
+
+[good video](https://www.youtube.com/watch?v=URSWYvyc42M) explaining what to test and why
+
+![testing.png](testing.png)
+
+i think
+
+-   only test the 'edge'
+-   stuff heading in or out of the object
+-   iow, test the api
+
+external apis (like fetch) can be 'mocked' to cut down on time, network errors, limits
