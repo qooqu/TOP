@@ -203,3 +203,85 @@ bobsStories = Story.find({ author: bob._id }).exec(function (err, stories) {
     // returns all stories that have Bob's id as their author.
 });
 ```
+
+### secrets
+
+[link](https://www.twilio.com/blog/2017/08/working-with-environment-variables-in-node-js.html)
+
+put mongo URI in .env (make sure .env is in .gitignore)
+
+```
+mongoSecret=mongodb+srv:// etc
+```
+
+then
+
+```
+npm install dotenv
+```
+
+add to top of app.js
+
+```
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+```
+
+secret will be available as
+
+```
+var mongoDB = process.env.mongoSecret;
+```
+
+# deploy
+
+## heroku
+
+heroku has its own git ... you don't have to add a seperate `git init` to a TOP subfolder
+
+when you run `heroku create`, it makes an app and a repo on heroku.com
+
+https://devcenter.heroku.com/articles/git
+
+### steps
+
+1. in `package.json`, add
+
+    ```
+    "engines": {
+            "node": "12.18.3"
+        }
+    ```
+
+1. add a `procfile` at root with one line `web: node ./bin/www`
+
+    ```
+    > heroku create
+    Creating app... done, ⬢ thawing-inlet-61413
+    https://thawing-inlet-61413.herokuapp.com/ | https://git.heroku.com/thawing-inlet-61413.git
+    ```
+
+1. confirm that git push is pointing at the right place
+
+    ```
+    > git remote -v
+    heroku  https://git.heroku.com/thawing-inlet-61413.git (fetch)
+    heroku  https://git.heroku.com/thawing-inlet-61413.git (push)
+    ```
+
+1. if it's not
+
+    ```
+    > heroku git:remote -a thawing-inlet-61413
+    set git remote heroku to https://git.heroku.com/thawing-inlet-61413.git
+    ```
+
+1. deploy
+
+    ```
+    git subtree push --prefix path/to/subdirectory heroku master
+    // git push heroku main
+    ```
+
+git subtree push --prefix node/test heroku main
