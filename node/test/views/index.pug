@@ -1,7 +1,0 @@
-extends layout
-
-block content
-  h1 #{title}
-  each message in messages
-    p #{message.text} - #{message.user} - #{message.added}
-  a(href='/' + url) new message

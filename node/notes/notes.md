@@ -70,6 +70,12 @@ _note:_ middleware functions are executed in the order they are instantiated
 
 [middleware docs](http://expressjs.com/en/guide/using-middleware.html)
 
+## forms
+
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/forms
+
+![Web-server-form-handling.png](Web-server-form-handling.png)
+
 # architecture
 
 ## MVC
@@ -81,6 +87,18 @@ model: db
 view: website
 
 controller: logic
+
+![MVC-Express.png](MVC-Express.png)
+
+1. `client` send `request` to `server`
+
+1. `request` hits `routes`
+
+1. `routes` sends the `request` to the appropriate `controller`
+
+1. `controller` processes the `request`, gets data from the appropriate `model`, and renders the appropriate `template`
+
+1. `server` sends `response` to the `client`
 
 # DB
 
@@ -243,8 +261,11 @@ heroku has its own git ... you don't have to add a seperate `git init` to a TOP 
 when you run `heroku create`, it makes an app and a repo on heroku.com
 
 https://devcenter.heroku.com/articles/git
+https://medium.com/@shalandy/deploy-git-subdirectory-to-heroku-ea05e95fce1f
 
 ### steps
+
+assuming you're in the TOP repo and you want to deploy a node project that lives in a subfolder
 
 1. in `package.json`, add
 
@@ -256,18 +277,24 @@ https://devcenter.heroku.com/articles/git
 
 1. add a `procfile` at root with one line `web: node ./bin/www`
 
+1. cd to the TOP root
+
+1. create heroku project and repo
+
     ```
     > heroku create
     Creating app... done, ⬢ thawing-inlet-61413
     https://thawing-inlet-61413.herokuapp.com/ | https://git.heroku.com/thawing-inlet-61413.git
     ```
 
-1. confirm that git push is pointing at the right place
+1. confirm that git's 'heroku' variable is pointing at the right place
 
     ```
     > git remote -v
     heroku  https://git.heroku.com/thawing-inlet-61413.git (fetch)
     heroku  https://git.heroku.com/thawing-inlet-61413.git (push)
+    origin <this will be the 'real' repo on github> (fetch)
+    origin <this will be the 'real' repo on github> (push)
     ```
 
 1. if it's not
@@ -277,11 +304,22 @@ https://devcenter.heroku.com/articles/git
     set git remote heroku to https://git.heroku.com/thawing-inlet-61413.git
     ```
 
-1. deploy
+1. commit everything to `main` the usual way (`git add .`, etc)
+
+1. deploy the node project to heroku with `git subtree`
 
     ```
-    git subtree push --prefix path/to/subdirectory heroku master
-    // git push heroku main
+    git subtree push --prefix path/to/subdirectory heroku main
+
+    // example:
+    git subtree push --prefix node/message-board heroku main
     ```
 
-git subtree push --prefix node/test heroku main
+rename an app
+
+```
+heroku apps:rename newname --app oldname
+
+// example
+heroku apps:rename top-message-board --app pure-lake-23744
+```

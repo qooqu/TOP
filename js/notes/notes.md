@@ -398,9 +398,9 @@ make a new project folder
 
 cd into it
 
-run npm init
+run `npm init`
 
-npm will create a node_modules folder and a package.json file
+npm will create a `node_modules` folder and a `package.json` file
 
 add packages to your project with `npm install --save <package name>`
 
@@ -411,9 +411,9 @@ npm will download the package to node_modules and add it to the dependencies fie
 
 in your code, you can access a package with `import <package name>`
 
-package.json should be included in git, node_modules should not
+`package.json` should be included in git, `node_modules` should not
 
-exclude all node_modules by putting `.gitignore` at root with these lines
+exclude `node_modules` by putting `.gitignore` at root with these lines
 
 ```js
 # Ignore node_modules folder
@@ -769,8 +769,7 @@ function getResult() {
 
 async function getResult() {
     let result = await promiseBasedFunction(input);
-    // since, getResult is an async function, await causes execution to pause here until promiseBasedFuncion is resolved
-    useThatResult(result); // this will run just fine
+    useThatResult(result); // this will run fine
 }
 ```
 
