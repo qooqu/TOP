@@ -12,7 +12,7 @@ exports.bookinstance_list = function (req, res, next) {
                 return next(err);
             }
             // Successful, so render
-            res.render("bookinstance_list", {
+            res.render("bookInstance_list", {
                 title: "Book Instance List",
                 bookinstance_list: list_bookinstances,
             });
