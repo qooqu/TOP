@@ -296,6 +296,7 @@ heroku has its own git ... you don't have to add a seperate `git init` to a TOP 
 when you run `heroku create`, it makes an app and a repo on heroku.com
 
 https://devcenter.heroku.com/articles/git
+https://devcenter.heroku.com/articles/preparing-a-codebase-for-heroku-deployment
 https://medium.com/@shalandy/deploy-git-subdirectory-to-heroku-ea05e95fce1f
 
 ### steps
@@ -310,7 +311,23 @@ assuming you're in the TOP repo and you want to deploy a node project that lives
         }
     ```
 
-1. add a `procfile` at root with one line `web: node ./bin/www`
+1. add a `procfile` at root with one line
+
+    ```
+    web: node ./bin/www
+    // or
+    web: node app.js
+    ```
+
+1. heroku only works on port 8000. update `app.listen` to
+
+    ```
+    let port = process.env.PORT;
+    if (port == null || port == "") {
+        port = 8000;
+    }
+    app.listen(port);
+    ```
 
 1. cd to the TOP root
 
@@ -350,15 +367,6 @@ assuming you're in the TOP repo and you want to deploy a node project that lives
     git subtree push --prefix node/message-board heroku main
     ```
 
-1. rename the app
-
-    ```
-    heroku apps:rename newname --app oldname
-
-    // example
-    heroku apps:rename top-message-board --app pure-lake-23744
-    ```
-
 1. config
 
     set environment to production
@@ -377,4 +385,13 @@ assuming you're in the TOP repo and you want to deploy a node project that lives
 
     ```
     heroku config
+    ```
+
+1. rename the app
+
+    ```
+    heroku apps:rename newname --app oldname
+
+    // example
+    heroku apps:rename top-message-board --app pure-lake-23744
     ```

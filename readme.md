@@ -86,19 +86,16 @@ basics
 [repo](https://github.com/qooqu/top/tree/main/node/library) |
 library catalog ... node, express, mongo ... CRUD, MVC, routes and controllers, view templates, deployment
 
-auth basics,
-security config,
-API basics & security,
-testing
+[live](https://top-auth-basics.herokuapp.com/) |
+[repo](https://github.com/qooqu/top/tree/main/node/auth-basics) |
+auth and security basics ... node, express, passportjs, dotenv, mongo
 
 ## more to come
 
+### node
+
+REST, CORS, JWT, testing
+
 ### UX
 
-forms,
-positioning,
-accessibility,
-responsive,
-frameworks (bootstrap and foundation),
-animation,
-preprocessors
+forms, positioning, accessibility, responsive, frameworks (bootstrap and foundation), animation, preprocessors
