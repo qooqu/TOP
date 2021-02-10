@@ -66,9 +66,44 @@ const myLogger = function (req, res, next) {
 app.use(myLogger);
 ```
 
-_note:_ middleware functions are executed in the order they are instantiated
+## middleware
+
+middleware functions are executed in the order they are instantiated
 
 [middleware docs](http://expressjs.com/en/guide/using-middleware.html)
+
+```js
+const express = require("express");
+var app = express();
+
+// Custom middleware
+function myMiddleware1(req, res, next) {
+    req.newProperty = "my custom property";
+    next();
+}
+// Another custom middleware
+function myMiddleware2(req, res, next) {
+    req.newProperty = "updated value";
+    next();
+}
+app.get("/", (req, res, next) => {
+    res.send(`<h1>Custom Property Value: ${req.newProperty}`);
+});
+// Server listens on http://localhost:3000
+app.listen(3000);
+```
+
+The middleware functions are defined but not invoked, so `/` will return "Custom Property Value: undefined".
+
+```js
+// replace app.get with
+app.use(myMiddleware2);
+app.get("/", myMiddleware1, (req, res, next) => {
+    res.send(`<h1>Custom Property Value: ${req.newProperty}`);
+});
+```
+
+`app.use(myMiddleware2)` middleware is called before the `app.get('/', myMiddleware1)`, so `/` sends "Custom Property Value: my custom property". If you remove `myMiddleware1` from the route, it will send "Custom Property Value: updated value".
 
 ## forms
 
@@ -229,7 +264,7 @@ bobsStories = Story.find({ author: bob._id }).exec(function (err, stories) {
 put mongo URI in .env (make sure .env is in .gitignore)
 
 ```
-mongoSecret=mongodb+srv:// etc
+MONGODB_URI=mongodb+srv:// etc
 ```
 
 then
@@ -249,7 +284,7 @@ if (process.env.NODE_ENV !== 'production') {
 secret will be available as
 
 ```
-var mongoDB = process.env.mongoSecret;
+var mongoDB = process.env.MONGODB_URI;
 ```
 
 # deploy
@@ -315,11 +350,31 @@ assuming you're in the TOP repo and you want to deploy a node project that lives
     git subtree push --prefix node/message-board heroku main
     ```
 
-rename an app
+1. rename the app
 
-```
-heroku apps:rename newname --app oldname
+    ```
+    heroku apps:rename newname --app oldname
 
-// example
-heroku apps:rename top-message-board --app pure-lake-23744
-```
+    // example
+    heroku apps:rename top-message-board --app pure-lake-23744
+    ```
+
+1. config
+
+    set environment to production
+
+    ```
+    heroku config:set NODE_ENV='production'
+    ```
+
+    set MONGODB_URI environment variable (note: should use separate DB for dev and prod)
+
+    ```
+    heroku config:set MONGODB_URI='mongodb+srv:// etc
+    ```
+
+    inspect config
+
+    ```
+    heroku config
+    ```

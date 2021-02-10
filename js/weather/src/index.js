@@ -11,7 +11,7 @@ img.style.visibility = "hidden";
 const getImgSrc = async function (searchTerm) {
     try {
         let response = await fetch(
-            `https://api.giphy.com/v1/gifs/translate?api_key=ML6NgE96Z2o94PYyhUAPHsse4eDObE3H&s=${searchTerm}`,
+            `https://api.giphy.com/v1/gifs/translate?api_key=Wg1pcdQ6PLj2OI7BN8rVpChC00vq1Szc&s=${searchTerm}`,
             { mode: "cors" }
         );
         if (!response.ok) {
