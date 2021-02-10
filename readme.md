@@ -1,8 +1,8 @@
 # welcome
 
-I'm working my way through the [The Odin Project](https://theodinproject.com/about), an open source curriculum for full stack JS. I do all of my TOP work in this repo.
+I'm working through the [The Odin Project](https://theodinproject.com/about), an open source curriculum for full stack JS. All of my TOP work is in this repo.
 
-In addition to viewing the source, you can see some projects live on gh pages (links below).
+Below, you can see some projects live on gh pages and heroku.
 
 # project links
 
@@ -80,9 +80,16 @@ xxxx |
 [repo](https://github.com/qooqu/top/tree/main/js/testing/) |
 basics
 
-xxxx |
-xxxx |
-simple game with TDD ... in progress
+## node
+
+[live](https://top-library.herokuapp.com/catalog) |
+[repo](https://github.com/qooqu/top/tree/main/node/library) |
+library catalog ... node, express, mongo ... CRUD, MVC, routes and controllers, view templates, deployment
+
+auth basics,
+security config,
+API basics & security,
+testing
 
 ## more to come
 
@@ -95,15 +102,3 @@ responsive,
 frameworks (bootstrap and foundation),
 animation,
 preprocessors
-
-### node and express
-
-CRUD,
-MVC,
-deployment,
-routes and controllers,
-view templates,
-auth basics,
-security config,
-API basics & security,
-testing
