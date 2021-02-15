@@ -90,11 +90,15 @@ library catalog ... node, express, mongo ... CRUD, MVC, routes and controllers, 
 [repo](https://github.com/qooqu/top/tree/main/node/auth-basics) |
 auth and security basics ... node, express, passportjs, dotenv, mongo
 
+xxxx |
+[repo](https://github.com/qooqu/top/tree/main/node/REST) |
+REST, curl
+
 ## more to come
 
 ### node
 
-REST, CORS, JWT, testing
+CORS, JWT, testing
 
 ### UX
 
