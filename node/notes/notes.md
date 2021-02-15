@@ -2,7 +2,7 @@
 
 client and server talk with http
 
-client to server: request
+client to server: request (includes the `path` and the `method` (see below))
 
 server to client: response
 
@@ -10,11 +10,12 @@ static server: grabs some files, sends them
 
 dynamic server: builds some files, sends them
 
-http requests
+most common request methods:
 
--   GET: Get a specific resource (e.g. an HTML file containing information about a product, or a list of products).
 -   POST: Create a new resource (e.g. add a new article to a wiki, add a new contact to a database).
+-   GET: Get a specific resource (e.g. an HTML file containing information about a product, or a list of products).
 -   PUT: Update an existing resource (or create a new one if it doesn't exist).
+-   DELETE: Delete an existing resource
 
 [mozilla](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview)
 
@@ -126,6 +127,8 @@ controller: logic
 ![MVC-Express.png](MVC-Express.png)
 
 1. `client` send `request` to `server`
+
+    `request` includes the `path` and the `method` (GET, POST, etc)
 
 1. `request` hits `routes`
 
@@ -287,6 +290,45 @@ secret will be available as
 var mongoDB = process.env.MONGODB_URI;
 ```
 
+# API
+
+server just sends data. no more views.
+
+## JSON
+
+use `res.json()` instead of `res.render()`
+
+## REST
+
+Representation State Transfer
+
+style for setting up api routes
+
+([graphql](https://www.howtographql.com/graphql-js/1-getting-started/) is an alternative to rest, implemented in node with apollo-server (which includes express))
+
+### CRUD
+
+| CRUD   | HTTP   |
+| ------ | ------ |
+| Create | POST   |
+| Read   | GET    |
+| Update | PUT    |
+| Delete | DELETE |
+
+### the seven routes
+
+![REST](REST.png)
+
+## CORS
+
+say node is serving data and views. node has a url, say example.com. the views will be accessed from example.com. meaning, the client and server are both on example.com. put another way, requests are from the same url as the server.
+
+that's called 'same origin'. by default, node enforces a 'same origin policy' by which node will check the url of the request and reject it if it doesn't match the url of the server.
+
+but we want to serve up an api, so we need to accept requests from other urls. CORS is middleware that lets you do that. Cross Origin Resource Sharing.
+
+https://expressjs.com/en/resources/middleware/cors.html
+
 # deploy
 
 ## heroku
@@ -395,3 +437,23 @@ assuming you're in the TOP repo and you want to deploy a node project that lives
     // example
     heroku apps:rename top-message-board --app pure-lake-23744
     ```
+
+# curl
+
+command line utility to talk to servers
+
+windows has its own crummy version
+
+when you install git, you get the real curl
+
+but windows aliases curl to its crummy version
+
+go to windows terminal $profile (not settings.json) and remove the alias
+
+now curl goes to the real curl
+
+curl / json in powershell is a pain
+
+add --%, use double quotes throughout json, and escape all the inner ones with \
+
+curl --% -X POST -H "Content-Type:application/json" http://localhost:3000/messages -d "{\"text\":\"Hi again, World\"}"

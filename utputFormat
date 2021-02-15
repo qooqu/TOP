@@ -1,0 +1,19 @@
+HTTP/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Security-Policy: default-src 'none'
+X-Content-Type-Options: nosniff
+Content-Type: text/html; charset=utf-8
+Content-Length: 1234
+Date: Sat, 13 Feb 2021 13:44:52 GMT
+Connection: keep-alive
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>SyntaxError: Unexpected token - in JSON at position 1<br> &nbsp; &nbsp;at JSON.parse (&lt;anonymous&gt;)<br> &nbsp; &nbsp;at createStrictSyntaxError (C:\Users\David\Desktop\Folder\Programming\top\node\REST\node_modules\body-parser\lib\types\json.js:158:10)<br> &nbsp; &nbsp;at parse (C:\Users\David\Desktop\Folder\Programming\top\node\REST\node_modules\body-parser\lib\types\json.js:83:15)<br> &nbsp; &nbsp;at C:\Users\David\Desktop\Folder\Programming\top\node\REST\node_modules\body-parser\lib\read.js:121:18<br> &nbsp; &nbsp;at invokeCallback (C:\Users\David\Desktop\Folder\Programming\top\node\REST\node_modules\raw-body\index.js:224:16)<br> &nbsp; &nbsp;at done (C:\Users\David\Desktop\Folder\Programming\top\node\REST\node_modules\raw-body\index.js:213:7)<br> &nbsp; &nbsp;at IncomingMessage.onEnd (C:\Users\David\Desktop\Folder\Programming\top\node\REST\node_modules\raw-body\index.js:273:7)<br> &nbsp; &nbsp;at IncomingMessage.emit (events.js:327:22)<br> &nbsp; &nbsp;at endReadableNT (_stream_readable.js:1220:12)<br> &nbsp; &nbsp;at processTicksAndRejections (internal/process/task_queues.js:84:21)</pre>
+</body>
+</html>
