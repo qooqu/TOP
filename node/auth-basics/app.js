@@ -75,13 +75,13 @@ passport.deserializeUser(function (id, done) {
 });
 
 // `locals` is available to everything, including views.
-// by sticking req.user onto locals, we don't need to pass it individually to every view. See below.
+// by sticking req.user onto locals, we don't need to pass it individually to every view. See app.get("/".
 app.use(function (req, res, next) {
     res.locals.currentUser = req.user;
     next();
 });
 
-// if we didn't have req.user on locals, we'd have to pass it like this
+// if we didn't have `currentUser = req.user` on res.locals, we'd have to pass it like this
 // app.get("/", (req, res) => {
 //     res.render("index", { currentUser: req.user });
 // });
@@ -92,6 +92,9 @@ app.get("/", (req, res) => {
 
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 
+// app.post("/sign-up" ... simple version
+// - stores password in plain text
+// - missing validation and sanitisation of form input
 // app.post("/sign-up", (req, res, next) => {
 //     const user = new User({
 //         username: req.body.username,
@@ -103,6 +106,10 @@ app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 //         res.redirect("/");
 //     });
 // });
+
+// app.post("/sign-up" ... better version
+// - encrypts password
+// - still missing validation and sanitisation of form input
 app.post("/sign-up", (req, res, next) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
         if (err) {

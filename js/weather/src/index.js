@@ -11,6 +11,8 @@ img.style.visibility = "hidden";
 const getImgSrc = async function (searchTerm) {
     try {
         let response = await fetch(
+            // DON'T EVER SEND A SECRET TO THE CLIENT!!
+            // (allowing here as it's a learning exercise with a worthless key)
             `https://api.giphy.com/v1/gifs/translate?api_key=Wg1pcdQ6PLj2OI7BN8rVpChC00vq1Szc&s=${searchTerm}`,
             { mode: "cors" }
         );
@@ -33,6 +35,8 @@ const getImgSrc = async function (searchTerm) {
 const getWeather = async function (where) {
     try {
         let response = await fetch(
+            // DON'T EVER SEND A SECRET TO THE CLIENT!!
+            // (allowing here as it's a learning exercise with a worthless key)
             `https://api.openweathermap.org/data/2.5/weather?q=${where}&APPID=13df276a9ad2a9aaa3c0a91ff50c35c3`,
             { mode: "cors" }
         );

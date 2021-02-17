@@ -25,6 +25,8 @@
             // promises version
             // const doFetch = function (searchTerm) {
             //     fetch(
+            //          DON'T EVER SEND A SECRET TO THE CLIENT!!
+            //          (allowing here as it's a learning exercise with a worthless key)
             //         `https://api.giphy.com/v1/gifs/translate?api_key=ML6NgE96Z2o94PYyhUAPHsse4eDObE3H&s=${searchTerm}`,
             //         { mode: "cors" }
             //     )
@@ -42,6 +44,8 @@
             const doFetch = async function (searchTerm) {
                 try {
                     let response = await fetch(
+                        //          DON'T EVER SEND A SECRET TO THE CLIENT!!
+                        //          (allowing here as it's a learning exercise with a worthless key)
                         `https://api.giphy.com/v1/gifs/translate?api_key=ML6NgE96Z2o94PYyhUAPHsse4eDObE3H&s=${searchTerm}`,
                         { mode: "cors" }
                     );

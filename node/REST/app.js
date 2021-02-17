@@ -1,3 +1,8 @@
+// TODO
+// wire up a db
+// host the app on heroku
+// add CORS
+
 const uniqid = require("uniqid");
 const express = require("express");
 
@@ -10,11 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 let users = {
     1: {
         id: "1",
-        username: "Robin Wieruch",
+        username: "Dude Man",
     },
     2: {
         id: "2",
-        username: "Dave Davids",
+        username: "Alfie Doggy",
     },
 };
 
@@ -47,6 +52,7 @@ app.get("/messages/:messageId", (req, res) => {
     return res.send(messages[req.params.messageId]);
 });
 
+// this should be sanitised and validated
 app.post("/messages", (req, res) => {
     const id = uniqid();
     const message = {

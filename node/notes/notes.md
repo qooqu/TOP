@@ -69,6 +69,8 @@ app.use(myLogger);
 
 ## middleware
 
+middleware functions take the req and res objects, manipulate them, and pass them on through the rest of the app
+
 middleware functions are executed in the order they are instantiated
 
 [middleware docs](http://expressjs.com/en/guide/using-middleware.html)
@@ -290,6 +292,22 @@ secret will be available as
 var mongoDB = process.env.MONGODB_URI;
 ```
 
+# frontend / backend
+
+rather than an integrated server (template + data = send html)
+
+frontend
+
+-   web apps (react or similar)
+-   mobile apps
+
+backend / API
+
+-   db
+-   node, but just sending data as JSON
+
+note: good practice to push calcs onto the client. keep your secret sauce on the server, but faster and cheaper on the client
+
 # API
 
 server just sends data. no more views.
@@ -297,6 +315,12 @@ server just sends data. no more views.
 ## JSON
 
 use `res.json()` instead of `res.render()`
+
+or
+
+app.use(express.json()) and res.send
+
+express.json() causes all data to be received and sent as JSON [link](https://www.robinwieruch.de/node-express-server-rest-api)
 
 ## REST
 
