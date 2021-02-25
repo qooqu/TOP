@@ -353,6 +353,149 @@ but we want to serve up an api, so we need to accept requests from other urls. C
 
 https://expressjs.com/en/resources/middleware/cors.html
 
+CORS may only apply to cookies? From [jwt.io](https://jwt.io/introduction): "If the token is sent in the Authorization header, Cross-Origin Resource Sharing (CORS) won't be an issue as it doesn't use cookies."
+
+# auth
+
+sign up > login > protected routes > logout
+
+## passportjs
+
+middleware that handles the plumbing (passing things back and forth between client and server)
+
+works with sessions and jwt
+
+### howto
+
+1. initialize with passport.initialize() (I think? ... seems to work without this)
+
+1. configure a strategy with `passport.use`
+
+    ```js
+    // username and password strategy is called LocalStrategy
+    passport.use(
+        "login", // optional name for the configured strategy. if you don't include this param, the default name is 'local'
+        new LocalStrategy(function (username, password, done) {
+            // NOTE: you have to write all this stuff ... passport just does the plumbing
+            User.findOne({ username: username }, function (err, user) {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false, {
+                        message: "Incorrect username or password.",
+                    });
+                }
+                // NOTE: you have to write validPassword method on your UserSchema.methods
+                if (!user.validPassword(password)) {
+                    return done(null, false, {
+                        message: "Incorrect username or password.",
+                    });
+                }
+                return done(null, user);
+            });
+        })
+    );
+    ```
+
+1. invoke a strategy on a route with `passport.authenticate`
+
+    ```js
+    app.post("/login", passport.authenticate("local"), function (req, res) {
+        // If this function gets called, authentication was successful.
+        // `req.user` contains the authenticated user.
+        res.redirect("/users/" + req.user.username);
+    });
+    ```
+
+1. logout
+    - sessions: req.logout()
+    - jwt: it's complicated
+
+## bcrypt
+
+password encryption
+
+```js
+const UserSchema = new Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+});
+
+UserSchema.pre("save", async function (next) {
+    const user = this;
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+    next();
+});
+
+UserSchema.methods.isValidPassword = async function (password) {
+    const user = this;
+    const compare = await bcrypt.compare(password, user.password);
+    return compare;
+};
+
+const UserModel = mongoose.model("user", UserSchema);
+```
+
+## server-side sessions / cookies
+
+The credentials used to authenticate a user are transmitted during the login request. If authentication succeeds, a session is established ('<user> is logged in') and maintained via a cookie set in the user's browser.
+
+The session is stored in a server side DB. Every request includes the cookie, which is checked against the DB. This query takes time.
+
+## JSON Web Token / JWT
+
+The server generates a token based on a secret and sends it to the client's localStorage. The token is then passed in every request from the client. On each request, the server calculates the token's validity.
+
+Note there's no database query, so it's faster than server-side sessions.
+
+Some subtleties around expiry:
+
+1. Tokens are defualt valid forever, so you have to specify an expiry when it's created.
+1. Item 1. makes logout tricky. Usually, logged out tokens are stored in a DB until they expire. So in practice, you do have to make a query on every req, but the table is much smaller than with sessions, so it's still faster.
+1. You also have to think about refreshing the token so an active user isn't logged out on expiry.
+
+```js
+// npm module
+const jwt = require("jsonwebtoken");
+// jwt.sign(payload data, secret, npm module options)
+const token = jwt.sign({ user: body }, process.env.SECRET, {
+    expiresIn: "30s",
+});
+```
+
+### token details
+
+header.payload.signature
+
+header is public
+
+payload is public by default. it's possible to encrypt it, but I think the standard approach is to not put anything sensitive in there.
+
+signature is the secure part
+
+    header data => base64 => header
+
+    payload data => base64 => payload
+
+    header + payload + secret => algo => base64 => signature
+
+go to https://jwt.io/#debugger and examine the default token. type some random stuff in for the secret. note that only the signature changes. now alter the payload data. note that both the payload and the signature change. but the secret is wrong, so the altered jwt will fail authentication.
+
+But I'm not sure I understand how the authentication works. I guess it does this:
+
+    1. header + payload + signature => algo => computed_secret
+
+    2. compare computed_secret to secret
+
 # deploy
 
 ## heroku

@@ -1086,6 +1086,16 @@ all of the stuff you can do with class based lifecycle methods is available thro
 
 it's pretty straightforward. go [here](https://theodinproject.com/courses/javascript/lessons/router)
 
+## Using Composition to Avoid Prop Drilling
+
+https://www.youtube.com/watch?v=3XaXKiXtNjw
+
+https://kentcdodds.com/blog/prop-drilling
+
+## Connect React to a REST API
+
+https://www.andreasreiterer.at/connect-react-app-rest-api/
+
 ## hosting on github
 
 [link](https://blog.usejournal.com/how-to-deploy-your-react-app-into-github-pages-b2c96292b18e)
@@ -1143,3 +1153,35 @@ i think
 -   iow, test the api
 
 external apis (like fetch) can be 'mocked' to cut down on time, network errors, limits
+
+## jest
+
+install
+
+`npm install jest --save-dev`
+
+add to npm
+
+```
+    "scripts": {
+        "test": "jest",
+        "test:watch": "jest --watch --runInBand"
+    },
+```
+
+note: runInBand isn't needed, but I find it makes jest run a lot faster
+https://megafauna.dev/jest-speed-up-slow-test-suites/
+
+fire it up with
+
+`npm run test:watch`
+
+jest will automatically look for files named `something.test.js`
+
+simple test file
+
+```
+it('Testing to see if Jest works', () => {
+  expect(1).toBe(2)
+})
+```
