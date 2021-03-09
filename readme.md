@@ -74,11 +74,9 @@ memory game
 [repo](https://github.com/qooqu/top/tree/main/js/react/shop/) |
 shop ... router
 
-## TDD
-
 xxxx |
 [repo](https://github.com/qooqu/top/tree/main/js/testing/) |
-basics
+testing
 
 ## node
 
@@ -94,12 +92,10 @@ xxxx |
 [repo](https://github.com/qooqu/top/tree/main/node/REST) |
 REST, curl
 
-## more to come
+xxxx |
+[repo](https://github.com/qooqu/top/tree/main/node/jwt) |
+JWT
 
-### node
-
-CORS, JWT, testing
-
-### UX
-
-forms, positioning, accessibility, responsive, frameworks (bootstrap and foundation), animation, preprocessors
+xxxx |
+[repo](https://github.com/qooqu/top/tree/main/node/testing) |
+testing

@@ -1096,6 +1096,18 @@ https://kentcdodds.com/blog/prop-drilling
 
 https://www.andreasreiterer.at/connect-react-app-rest-api/
 
+fetching on load seems easy enough, what about updating? maybe something like:
+
+```js
+// optimistic UI
+newState = state + data;
+setState(newState);
+
+// real update
+POST(data).then(GET(newState));
+setState(newState);
+```
+
 ## hosting on github
 
 [link](https://blog.usejournal.com/how-to-deploy-your-react-app-into-github-pages-b2c96292b18e)
@@ -1178,10 +1190,21 @@ fire it up with
 
 jest will automatically look for files named `something.test.js`
 
-simple test file
+```js
+it("Testing to see if Jest works", () => {
+    expect(1).toBe(1);
+});
 
+it("async test", async (done) => {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    let yo = 1;
+    expect(yo).toBe(1);
+    done();
+});
 ```
-it('Testing to see if Jest works', () => {
-  expect(1).toBe(2)
-})
-```
+
+## testing react
+
+https://jestjs.io/docs/en/tutorial-react
+
+weird ... i think you use 'snapshots'. react-test-renderer produces a json-y version of your component's output and jest saves it as a snapshot. next time you run the test, jest compares the new snapshot to the old one. so it's more of a 'something changed' test than 'something's wrong'

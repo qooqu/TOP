@@ -127,6 +127,11 @@ app.post("/sign-up", (req, res, next) => {
     });
 });
 
+// when the log-in form is submitted, it sends a POST request
+// the body of the request includes the username and password
+// passportjs uses the local strategy to check the credentials against the db
+// if the credentials are valid, it will set the user on req.user
+// it will use the cookie to keep track of the auth status
 app.post(
     "/log-in",
     passport.authenticate("local", {
@@ -135,9 +140,23 @@ app.post(
     })
 );
 
+// when the log out GET request comes in, passportjs removes the value from req.user
 app.get("/log-out", (req, res) => {
     req.logout();
     res.redirect("/");
+});
+
+// the protected route checks for a value on req.user and decides what to do
+app.get("/protected", (req, res, next) => {
+    if (req.user) {
+        res.json({
+            message: "you got the protected route. look at you",
+        });
+    } else {
+        res.json({
+            message: "woah woah woah woah",
+        });
+    }
 });
 
 let port = process.env.PORT;
