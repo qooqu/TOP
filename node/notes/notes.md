@@ -355,6 +355,8 @@ https://expressjs.com/en/resources/middleware/cors.html
 
 CORS may only apply to cookies? From [jwt.io](https://jwt.io/introduction): "If the token is sent in the Authorization header, Cross-Origin Resource Sharing (CORS) won't be an issue as it doesn't use cookies."
 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+
 # auth
 
 sign up > login > protected routes > logout
@@ -365,7 +367,11 @@ middleware that handles the plumbing (passing things back and forth between clie
 
 works with sessions and jwt
 
+https://dev.to/zachgoll/the-ultimate-guide-to-passport-js-k2l
+
 ### howto
+
+note: probably best to ignore this ... see 'connecting front to back'
 
 1. initialize with passport.initialize() (I think? ... seems to work without this)
 
@@ -496,6 +502,501 @@ But I'm not sure I understand how the authentication works. I guess it does this
 
     2. compare computed_secret to secret
 
+# connecting front to back (cookie / session version)
+
+## cookies v jwt
+
+jwt is cool but there's no good way to log out
+
+everything below is assuming cookies
+
+## cookies
+
+on first log in, passportjs will set a cookie
+
+see
+
+-   dev tools / network / response header / Set-Cookie
+-   dev tools / storage / cookies (sometimes you have to hit the cookie view refresh button)
+
+it will associate that cookie with a session (which is stored in the db)
+
+when the client sends a request, it will send the cookie
+
+passportjs will check the cookie against the associated session
+
+i think:
+
+-   the cookie identifies the client. you can log in and out as different users, but you will get the same cookie
+-   the session tracks which user is associated with the client and if they're logged in
+
+## api
+
+### store session info
+
+i think you need to store session info in a db
+
+`> npm install connect-mongodb-session`
+
+https://www.npmjs.com/package/connect-mongodb-session
+
+```js
+// app.js
+
+// at the top
+const MongoDBStore = require("connect-mongodb-session")(session);
+
+// ...
+
+const app = express();
+
+// ...
+
+const store = new MongoDBStore({
+    uri: mongoDb,
+    collection: "sessions",
+});
+
+// ...
+
+const sessionSecret = process.env.SECRET;
+app.use(
+    session({
+        secret: sessionSecret,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        },
+        store: store,
+        resave: false,
+        saveUninitialized: true,
+    })
+);
+```
+
+now you'll see a new collection in your db called 'sessions'
+
+note the `maxAge` property in the session options. this sets the cookie expiry
+
+### cors
+
+cross origin resource sharing
+
+say your api is hosted at `http://my-api.com`. any requests from outside `http://my-api.com` will be rejected by default
+
+cors tells the api that certain other origins, like `http://my-client.com`, are ok
+
+further, cors needs to be configured to allow us to send cookies back and forth
+
+`> npm install cors`
+
+```js
+// app.js
+
+// at the top
+const cors = require("cors");
+
+// ...
+
+const app = express();
+
+// ...
+
+// https://medium.com/zero-equals-false/using-cors-in-express-cac7e29b005b
+let allowedOrigins = [
+    "http://localhost:3000",
+    "https://bubbletask.netlify.app/",
+];
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            // allow requests with no origin
+            // (like mobile apps or curl requests)
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.indexOf(origin) === -1) {
+                var msg =
+                    "The CORS policy for this site does not " +
+                    "allow access from the specified Origin.";
+                return callback(new Error(msg), false);
+            }
+            return callback(null, true);
+        },
+        credentials: true,
+    })
+);
+```
+
+the `origin` property allows access
+
+the `credentials` property allows cookies
+
+### passportjs
+
+takes care of auth plumbing
+
+powerful, but poorly documented
+
+define Strategies, invoke them as middleware
+
+app.js ... embed passport into request-response cycle
+
+./auth/auth ... define Strategies (eg sign-up-strategy)
+
+./routes/auth ... invoke Strategies (eg router.post("/sign-up", passport.authenticate("sign-up-strategy"), etc)
+
+#### app.js
+
+```js
+// at the top
+
+const passport = require("passport");
+
+// ...
+
+const app = express();
+
+// ...
+
+// passport config
+const auth = require("./auth/auth");
+
+// invoke passport on every request
+app.use(passport.initialize());
+app.use(passport.session());
+
+// need this
+app.use(express.urlencoded({ extended: false }));
+
+// bring in some routes
+const authRoutes = require("./routes/auth"); // this is sign up, log in, log out
+const apiNormalRoutes = require("./routes/api/normal"); // normal
+const apiProtectedRoutes = require("./routes/api/protected"); // protected
+
+// invoke authRoutes
+// on sign up and log in, passportjs sets a value on req.user
+// on log out, passportjs removes the value on req.user
+app.use("/auth", authRoutes);
+
+// define a middleware to check the status of req.user
+const checkLoggedIn = function (req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.json({ message: "woah woah woah woah" });
+    }
+};
+
+// invoke normal and protected routes
+app.use("/api/normal", apiNormalRoutes);
+app.use("/api/protected", checkLoggedIn, apiProtectedRoutes);
+```
+
+#### ./auth/auth.js
+
+see code comments
+
+```js
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
+const User = require("../models/user");
+
+passport.use(
+    "sign-up-strategy", // assign a name to the Strategy (not documented)
+    new LocalStrategy((username, password, done) => {
+        User.findOne({ username: username }, (err, user) => {
+            if (err) {
+                return done(err); // done() is kind of like next()
+            }
+            if (user !== null) {
+                return done("username already taken. sorry", false); // include failure message (not documented)
+            }
+            bcrypt.hash(password, 10, (err, hashedPassword) => {
+                if (err) {
+                    return done(err);
+                } else {
+                    const newUser = new User({
+                        username: username,
+                        password: hashedPassword,
+                    }).save((err, user) => {
+                        if (err) {
+                            return done(err);
+                        } else {
+                            return done(null, user); // this sets user on req.user, ie logs in the new user
+                        }
+                    });
+                }
+            });
+        });
+    })
+);
+
+passport.use(
+    "log-in-strategy",
+    new LocalStrategy((username, password, done) => {
+        User.findOne({ username: username }, (err, user) => {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                return done("invalid credentials. try again", false);
+            }
+            bcrypt.compare(password, user.password, (err, res) => {
+                if (res) {
+                    return done(null, user);
+                } else {
+                    return done("invalid credentials. try again", false);
+                }
+            });
+        });
+    })
+);
+
+// boilerplate below
+
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+        done(err, user);
+    });
+});
+```
+
+#### auth routes
+
+sign up, log in, log out
+
+see code comments
+
+```js
+// ./routes/auth.js
+
+var express = require("express");
+var router = express.Router();
+
+const passport = require("passport");
+const bcrypt = require("bcryptjs");
+
+const User = require("../models/user");
+
+// failWithError allows following middleware to see err returned by passport / Strategy / done()
+// https://github.com/jaredhanson/passport/issues/458
+
+router.post(
+    "/sign-up",
+    passport.authenticate("sign-up-strategy", { failWithError: true }),
+    function (req, res, next) {
+        // Handle success
+        return res.send({
+            success: true,
+            message: "welcome aboard",
+            username: req.user.username,
+            id: req.user.id,
+        });
+    },
+    function (err, req, res, next) {
+        // Handle error
+        return res.status(401).send({
+            success: false,
+            message: err,
+            username: null,
+            id: null,
+        });
+    }
+);
+
+router.post(
+    "/log-in",
+    passport.authenticate("log-in-strategy", { failWithError: true }),
+    function (req, res, next) {
+        // Handle success
+        return res.send({
+            success: true,
+            message: "you're in",
+            username: req.user.username,
+            id: req.user.id,
+        });
+    },
+    function (err, req, res, next) {
+        // Handle error
+        return res.status(401).send({
+            success: false,
+            message: err,
+            username: null,
+            id: null,
+        });
+    }
+);
+
+// passport makes log out simple enough that you don't need a Strategy
+router.get("/log-out", (req, res) => {
+    req.logout();
+    return res.send({
+        success: true,
+        message: "you're out",
+        username: null,
+        id: null,
+    });
+});
+
+module.exports = router;
+```
+
+## client
+
+use fetch exclusively
+
+-   for forms, use onSubmit rather than action and method
+
+fetch options must include `credentials: "include"` to allow cookies
+
+https://github.com/github/fetch#sending-cookies
+
+see code below for the pattern and variations
+
+```js
+// component for sign up / in / out and 'get stuff'
+// two forms, two buttons
+// four methods
+
+const SignUpInOut = (props) => {
+    const onSignUp = (e) => {
+        e.preventDefault();
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("username", e.target.username.value);
+        urlencoded.append("password", e.target.password.value);
+
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: "follow",
+            credentials: "include",
+        };
+
+        fetch(
+            // "https://bubbletask-r1.herokuapp.com/auth/sign-up/",
+            "http://localhost:8080/auth/sign-up/",
+            requestOptions
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                props.setCurrentUser(data);
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const onSignIn = (e) => {
+        e.preventDefault();
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("username", e.target.username.value);
+        urlencoded.append("password", e.target.password.value);
+
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: "follow",
+            credentials: "include",
+        };
+
+        fetch(
+            // "https://bubbletask-r1.herokuapp.com/auth/log-in/",
+            "http://localhost:8080/auth/log-in/",
+            requestOptions
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                props.setCurrentUser(data);
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const onLogOut = (e) => {
+        e.preventDefault();
+        // fetch("https://bubbletask-r1.herokuapp.com/api/tasks", {
+        fetch("http://localhost:8080/auth/log-out", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((response) => response.json())
+            // .then((data) => console.log(data))
+            .then((data) => {
+                props.setCurrentUser(data);
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const getStuff = (e) => {
+        e.preventDefault();
+
+        // fetch("https://bubbletask-r1.herokuapp.com/api/tasks", {
+        fetch("http://localhost:8080/api/tasks", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.log("error", error));
+    };
+
+    return (
+        <>
+            <form onSubmit={onSignUp}>
+                <label htmlFor="username">
+                    <input
+                        id="username"
+                        name="username"
+                        placeholder="username"
+                        type="text"
+                    />
+                </label>
+                <label htmlFor="password">
+                    <input
+                        id="password"
+                        name="password"
+                        placeholder="password"
+                        type="password"
+                    />
+                </label>
+                <button>Sign Up</button>
+            </form>
+            <form onSubmit={onSignIn}>
+                <label htmlFor="username">
+                    <input
+                        id="username"
+                        name="username"
+                        placeholder="username"
+                        type="text"
+                    />
+                </label>
+                <label htmlFor="password">
+                    <input
+                        id="password"
+                        name="password"
+                        placeholder="password"
+                        type="password"
+                    />
+                </label>
+                <button>Log In</button>
+            </form>
+            <button onClick={onLogOut}>Log Out</button>
+            <button onClick={getStuff}>Get Stuff</button>
+        </>
+    );
+};
+
+export default SignUpInOut;
+```
+
 # deploy
 
 ## heroku
@@ -587,7 +1088,8 @@ assuming you're in the TOP repo and you want to deploy a node project that lives
     set MONGODB_URI environment variable (note: should use separate DB for dev and prod)
 
     ```
-    heroku config:set MONGODB_URI='mongodb+srv:// etc
+    // put a space in front to keep it out of the shell cache
+     heroku config:set MONGODB_URI='mongodb+srv:// etc
     ```
 
     inspect config

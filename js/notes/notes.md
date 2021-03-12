@@ -1082,6 +1082,26 @@ all of the stuff you can do with class based lifecycle methods is available thro
 -   [TOP](https://theodinproject.com/courses/javascript/lessons/hooks) is really into the dependency array. it seems to work, but it throws an error.
 -   [reactjs.org](https://reactjs.org/docs/hooks-effect.html) seems to ignore the dependency array
 
+## passing props up trick
+
+https://linguinecode.com/post/how-to-pass-parameter-values-to-onclick-react-function
+
+onClick definition is supposed to be the name of the function, without `()`
+
+if you include `()`, the function will fire on load and won't fire on click
+
+if you try to add args to an onClick definition like this `onClick=handleClick(props.item)`, it won't work
+
+here's the trick:
+
+```js
+const handleClick = (item) => () => realHandleClick(item);
+
+realHandleClick = (item) => console.log(item);
+```
+
+now you can use `onClick=handleClick(props.item)`. it will still invoke immediately, but it will return a function that you can invoke by clicking
+
 ## routing
 
 it's pretty straightforward. go [here](https://theodinproject.com/courses/javascript/lessons/router)
@@ -1140,6 +1160,8 @@ to fix the issue, use `BrowserRouter / basename`
 -   [discussion](https://github.com/facebook/create-react-app/issues/1765)
 -   [docs](https://reactrouter.com/web/api/BrowserRouter/basename-string)
 -   see top-js-react-shop
+
+## hosting on netlify
 
 # testing
 
