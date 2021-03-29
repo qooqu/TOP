@@ -2,7 +2,7 @@
 
 This is my workspace for the [The Odin Project](https://theodinproject.com/about), an open source curriculum for full stack JS. I completed the course in March 2021 and recommend it highly.
 
-Below, you can see some projects live on gh pages and heroku.
+Below, you can see some of the projects with links to the code and live sites.
 
 # project links
 
@@ -13,7 +13,7 @@ Below, you can see some projects live on gh pages and heroku.
 simple task tracking for teams
 
 -   full stack app, hand coded with node, express, mongo, passport, and react
--   front end hosted on netlify, CD from github
+-   front end hosted on netlify with CD from github
 -   express app hosted on heroku, db hosted on atlas
 -   heroku might take a minute to warm up
 
