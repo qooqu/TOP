@@ -587,6 +587,8 @@ cors tells the api that certain other origins, like `http://my-client.com`, are 
 
 further, cors needs to be configured to allow us to send cookies back and forth
 
+https://www.npmjs.com/package/cors#configuration-options
+
 `> npm install cors`
 
 ```js
@@ -604,7 +606,7 @@ const app = express();
 // https://medium.com/zero-equals-false/using-cors-in-express-cac7e29b005b
 let allowedOrigins = [
     "http://localhost:3000",
-    "https://bubbletask.netlify.app/",
+    "https://bubbletask.netlify.app",
 ];
 app.use(
     cors({

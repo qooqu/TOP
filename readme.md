@@ -1,14 +1,25 @@
 # welcome
 
-I'm working through the [The Odin Project](https://theodinproject.com/about), an open source curriculum for full stack JS. All of my TOP work is in this repo.
+This is my workspace for the [The Odin Project](https://theodinproject.com/about), an open source curriculum for full stack JS. I completed the course in March 2021 and recommend it highly.
 
 Below, you can see some projects live on gh pages and heroku.
 
 # project links
 
+## final project: bubble task
+
+[live](https://bubbletask.netlify.app/) |
+[repo](https://github.com/qooqu/bubbletask) |
+simple task tracking for teams
+
+-   full stack app, hand coded with node, express, mongo, passport, and react
+-   front end hosted on netlify, CD from github
+-   express app hosted on heroku, db hosted on atlas
+-   heroku might take a minute to warm up
+
 ## caveat
 
-Each project is focused on a limited number of learning objectives, so none of them are 'complete' or particularly polished.
+Each of the projects below is focused on a limited number of learning objectives, so none of them are 'complete' or particularly polished.
 
 ## basic html & css
 

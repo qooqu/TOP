@@ -6,6 +6,55 @@ preview side-by-side Ctrl+K V
 
 [markdown guide](https://www.markdownguide.org/basic-syntax/)
 
+# git
+
+https://github.com/git-guides/
+
+https://training.github.com/downloads/github-git-cheat-sheet/
+
+1. git init
+1. git pull ???
+1. git branch newBranch
+1. git checkout newBranch
+1. git add .
+1. git commit -m 'message'
+1. combining
+    1. merge ... history ends up parallel
+        1. git checkout main
+        1. git merge newBranch
+        1. git checkout newBranch
+        1. git merge main
+    1. rebase ... history ends up series
+        1. git rebase main
+        1. git checkout main
+        1. git rebase newBranch
+
+============
+
+1. clone main
+1. branch (feature branch)
+1. checkout feature branch
+1. make changes
+1. push branch to github
+1. make a pr (main vs branch)
+1. review / make changes / push changes
+1. merge
+1. close pr
+
+=============
+
+`git clone [url]`: Clone (download) a repository that already exists on GitHub, including all of the files, branches, and commits.
+
+`git status`: Always a good idea, this command shows you what branch you're on, what files are in the working or staging directory, and any other important information.
+
+`git remote -v`: Show the associated remote repositories and their stored name, like origin.
+
+`git remote add origin <url>`: Add a remote so you can collaborate with others on a newly initialized repository.
+
+`git push`: Uploads all local branch commits to the remote.
+
+`git push -u origin master`: When pushing a branch for the first time, this type of push will configure the relationship between the remote and your local repository so that you can use `git pull` and `git push` with no additional options in the future.
+
 # object constructors
 
 different ways of making objects
